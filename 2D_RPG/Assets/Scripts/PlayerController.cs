@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
 
     public Transform gunArm;
 
+    public Animator Anim;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
         Vector2 offset = new Vector2(mousePosition.x - screenPoint.x, mousePosition.y - screenPoint.y);
         float angle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
-        gunArm.rotation = Quaternion.Euler(0, 0, angle);
+        gunArm.rotation = Quaternion.Euler(0, 0, angle);    
 
         if(mousePosition.x < screenPoint.x)
         {
@@ -45,5 +47,16 @@ public class PlayerController : MonoBehaviour
             transform.localScale = Vector3.one;
             gunArm.localScale = Vector3.one;
         }
+
+        if(moveInput != Vector2.zero)
+        {
+            Anim.SetBool("isMoving", true);
+        }
+        else
+        {
+            Anim.SetBool("isMoving", false);
+        }
+
+
     }
 }
