@@ -6,6 +6,7 @@ public class PlayerBullet : MonoBehaviour
 {
     public float speed = 7.5f;
     private Rigidbody2D rb2d;
+    public GameObject impactEffect;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,8 +23,14 @@ public class PlayerBullet : MonoBehaviour
     {
         if(collision.tag == "Wall")
         {
+            Instantiate(impactEffect,transform.position,transform.rotation);
             Destroy(this.gameObject);
         }
         
+    }
+
+    private void OnBecameInvisible()
+    {
+        Destroy(this.gameObject);
     }
 }

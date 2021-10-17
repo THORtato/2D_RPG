@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
     void ShootingCheck()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             shotCounter -= Time.deltaTime;
             if (shotCounter <= 0)
