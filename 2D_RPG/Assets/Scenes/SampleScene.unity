@@ -600,7 +600,7 @@ MonoBehaviour:
   Anim: {fileID: 1046323309}
   Bullet: {fileID: 3597089996925359185, guid: c2268704b264ec844a7bc717e9dcd046, type: 3}
   firePoint: {fileID: 240304257}
-  timeBetweenShots: 1
+  timeBetweenShots: 0.2
 --- !u!4 &1046323306
 Transform:
   m_ObjectHideFlags: 0
@@ -632,8 +632,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0028153658, y: -0.05067885}
-  m_Size: {x: 0.97863245, y: 1.2815485}
+  m_Offset: {x: 0.0028153658, y: -0.18984884}
+  m_Size: {x: 0.97863245, y: 1.0032085}
   m_Direction: 0
 --- !u!50 &1046323308
 Rigidbody2D:
@@ -687,6 +687,7 @@ GameObject:
   - component: {fileID: 1104947052}
   - component: {fileID: 1104947054}
   - component: {fileID: 1104947055}
+  - component: {fileID: 1104947056}
   m_Layer: 0
   m_Name: Enemy_Zombie
   m_TagString: Untagged
@@ -771,6 +772,25 @@ MonoBehaviour:
   speed: 2
   rangeToChase: 5
   Player: {fileID: 1046323304}
+--- !u!95 &1104947056
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104947051}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 73f76de1c3c927945853147a1d16224c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1537567195
 GameObject:
   m_ObjectHideFlags: 0
