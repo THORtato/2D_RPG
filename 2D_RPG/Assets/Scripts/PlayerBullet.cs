@@ -21,14 +21,13 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        /*
-        if(collision.tag == "Wall")
+        if(collision.tag != "Player")
         {
-        */
+
             Instantiate(impactEffect,transform.position,transform.rotation);
             Destroy(this.gameObject);
         
-        //}
+        }
         
     }
 
