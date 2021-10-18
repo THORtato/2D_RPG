@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
     [Header("Movement")]
     [SerializeField]
     float moveSpeed;
@@ -21,6 +23,10 @@ public class PlayerController : MonoBehaviour
     public float timeBetweenShots;
     private float shotCounter;
 
+    private void Awake()
+    {
+        instance = this;
+    }
 
 
     // Start is called before the first frame update
