@@ -31,4 +31,6 @@ public class EnemyController : MonoBehaviour
         MoveDirection.Normalize();
         rb2d.velocity = MoveDirection * speed;
     }
+
+
 }
