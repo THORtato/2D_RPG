@@ -21,14 +21,13 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        /*
-        if(collision.tag == "Wall")
+        Instantiate(impactEffect,transform.position,transform.rotation);
+        Destroy(this.gameObject);
+
+        if(collision.gameObject.tag == "Enemy")
         {
-        */
-            Instantiate(impactEffect,transform.position,transform.rotation);
-            Destroy(this.gameObject);
-        
-        //}
+            collision.GetComponent<EnemyController>().DamageEnemy(50);
+        }
         
     }
 
@@ -36,4 +35,5 @@ public class PlayerBullet : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
+
 }

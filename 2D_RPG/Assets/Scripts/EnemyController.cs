@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    
+    //[Header("Runtime")]
+
+    [Header("Setting")]
+    private bool isMoving = false;
+    public float rangeToChase;
+    public int enemyHealth = 100;
+    [Space(10)]
+    [Header("Reference")]
     private Rigidbody2D rb2d;
     public float speed;
-
-    public float rangeToChase;
     private Vector3 MoveDirection;
     public GameObject Player;
-    private bool isMoving = false;
-
     private Animator animator;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +60,15 @@ public class EnemyController : MonoBehaviour
         else
         {
             animator.SetBool("isMoving", false);
+        }
+    }
+
+    public void DamageEnemy(int damage)
+    {
+        enemyHealth -= damage;
+        if(enemyHealth <= 0)
+        {
+            gameObject.SetActive(false);
         }
     }
 }
