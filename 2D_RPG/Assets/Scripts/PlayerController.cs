@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     public float timeBetweenShots;
     private float shotCounter;
 
+    public int health;
+
     private void Awake()
     {
         instance = this;
@@ -106,8 +108,15 @@ public class PlayerController : MonoBehaviour
                 Instantiate(Bullet, firePoint.position, firePoint.rotation);
                 shotCounter = timeBetweenShots;
             }
-        }
+        } 
+    }
 
-        
+    public void DamagePlayer(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }
