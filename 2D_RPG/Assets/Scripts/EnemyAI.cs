@@ -12,6 +12,11 @@ public class EnemyAI : MonoBehaviour
 
     //how close enemy need to a waypoint(?) before it moves on to the next one
     public float nextWaypointDistance = 3f;
+    public int UnitDamage;
+    public float UnitAttackRange;
+    public int EnemyHealth;
+    public bool isReadyToAttack = true;
+    public float delay;
 
     //current path following
     Path path;
@@ -22,7 +27,7 @@ public class EnemyAI : MonoBehaviour
     Rigidbody2D rb;
 
     //enemy detection
-    public bool PlayerDetected;
+    public bool TargetDetected;
     public Vector2 DirectionToTarget => target.transform.position - detectorOrigin.position;
     public Transform detectorOrigin;
     public float detectorSize;
@@ -79,6 +84,13 @@ public class EnemyAI : MonoBehaviour
     }
     private void Update()
     {
+        if (target != null)
+        {
+            if (Vector2.Distance(transform.position, target.transform.position) < UnitAttackRange)
+            {
+                UnitAction();
+            }
+        }
         
         /* 
         Check if something is in radius
@@ -128,17 +140,8 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    //sense enemy
-    /*
-    void DetectInRadius()
-    {
-        
-         if somthing is in radius, check tag
-            if tag is enemy then target enemy
-            target = enemyinradius.gameobject.transform;
-            else just patrol() or follow player
-         
-    }*/
+
+    //Detection
     IEnumerator DetectionCoroutine()
     {
         yield return new WaitForSeconds(detectionDelay);
@@ -154,10 +157,12 @@ public class EnemyAI : MonoBehaviour
         if(collider != null)
         {
             target = collider.gameObject;
+            TargetDetected = true;
         }
         else
         {
             target = null;
+            TargetDetected = false;
         }
     }
 
@@ -166,19 +171,39 @@ public class EnemyAI : MonoBehaviour
         if(showGizmo && detectorOrigin != null)
         {
             Gizmos.color = gizmoIdleColor;
-            if (PlayerDetected)
+            if (TargetDetected)
                 Gizmos.color = gizmoDetectedColor;
             Gizmos.DrawSphere((Vector2)detectorOrigin.position + detectorOriginOffset, detectorSize);
         }
     }
 
-
-    //action
+    //Action
     void UnitAction()
     {
-       /*
-        *if enemy is in attack distance, do action
-         */
+        
+        if(delay > 2f)
+        {
+            if (target.tag == "Player")
+            {
+                target.GetComponent<PlayerController>().health -= UnitDamage;
+            }
+            else if (target.tag == "Companion")
+            {
+                target.GetComponent<UnitAI>().UnitHealth -= UnitDamage;
+            }
+            delay = 0;
+        }
+        delay += Time.deltaTime;
+
 
     }
+
+    /*
+    IEnumerator AttackEnemy()
+    {
+        isReadyToAttack = false;
+        yield return new WaitForSeconds(2f);
+        isReadyToAttack = true;
+        UnitAction();
+    }*/
 }

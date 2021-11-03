@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
 
     public Animator Anim;
 
+    public int playerHealth;
+
     [Header("Attacking")]
     public GameObject Bullet;
     public Transform firePoint;
