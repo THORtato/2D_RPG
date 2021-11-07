@@ -7,6 +7,7 @@ using System;
 public class UnitAI : MonoBehaviour
 {
     public GameObject target;
+    public GameObject currentTarget;
 
     //Stats
     [Header("Unit Stats")]
@@ -39,6 +40,8 @@ public class UnitAI : MonoBehaviour
     public float detectionDelay = .5f;
     public LayerMask detectorLayerMask;
 
+    public bool isInCombat = false;
+
     //Detection gizmo
     [Header("Detection Gizmos")]
     public Color gizmoIdleColor = Color.green;
@@ -62,7 +65,7 @@ public class UnitAI : MonoBehaviour
     
     private void Update()
     {
-        if (target != null)
+        if (target!= null)
         {
             if (Vector2.Distance(transform.position, target.transform.position) < UnitAttackRange)
             {
@@ -137,7 +140,6 @@ public class UnitAI : MonoBehaviour
     {
         if (seeker.IsDone())
         {
-            
             //generating path
             if (target != null)
             {
@@ -174,16 +176,24 @@ public class UnitAI : MonoBehaviour
         Collider2D collider = Physics2D.OverlapCircle((Vector2)detectorOrigin.position + detectorOriginOffset, detectorSize,detectorLayerMask);
         Debug.Log("Detecting....");
 
+        if(currentTarget != null)
+        {
+            return;
+        }
+
+        //if there is something in collider
         if(collider != null)
         {
-            
             target = collider.gameObject;
+            currentTarget = target;
             Debug.Log(target.name + " Detected");
             PlayerDetected = true;
         }
         else
         {
             target = null;
+            currentTarget = null;
+            isInCombat = false;
             PlayerDetected = false;
             FollowPlayer();
         }
@@ -238,7 +248,7 @@ public class UnitAI : MonoBehaviour
     {
         if(UnitHealth <= 0)
         {
-            this.gameObject.SetActive(false);
+            Destroy(this.gameObject);
         }
     }
 }
