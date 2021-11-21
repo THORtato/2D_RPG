@@ -7,40 +7,63 @@ using System;
 public class EnemyAI : MonoBehaviour
 {
     public GameObject target;
+    public GameObject currentTarget;
 
+
+    public enum UnitType
+    {
+        Melee,
+        Ranged
+    }
+
+
+
+    //Stats
+    [Header("Unit Stats")]
     public float speed = 200f;
-
-    //how close enemy need to a waypoint(?) before it moves on to the next one
-    public float nextWaypointDistance = 3f;
     public int UnitDamage;
+    public int UnitHealth;
     public float UnitAttackRange;
-    public int EnemyHealth;
     public bool isReadyToAttack = true;
     public float delay;
+    public UnitType unitType;
 
-    //current path following
+
+    //Movement
+    [Header("Movement Settings")]
     Path path;
     int currentWaypoint = 0;
+    public Vector3 Range;
+    //how close enemy need to a waypoint(?) before it moves on to the next one
+    public float nextWaypointDistance = 3f;
     bool reachEndofPath = false;
-
     Seeker seeker;
     Rigidbody2D rb;
 
-    //enemy detection
-    public bool TargetDetected;
+    //Detection
+    [Header("Detection Settings")]
+    public bool PlayerDetected;
     public Vector2 DirectionToTarget => target.transform.position - detectorOrigin.position;
     public Transform detectorOrigin;
     public float detectorSize;
     public Vector2 detectorOriginOffset = Vector2.zero;
-
     public float detectionDelay = .5f;
     public LayerMask detectorLayerMask;
 
-    //enemy detection gizmo
-    [Header("Gizmos")]
+    public bool isInCombat = false;
+
+    //Detection gizmo
+    [Header("Detection Gizmos")]
     public Color gizmoIdleColor = Color.green;
     public Color gizmoDetectedColor = Color.red;
     public bool showGizmo = true;
+
+    [Header("Shooting")]
+    public bool shouldShoot;
+    public GameObject projectiles;
+    public Transform firepoint;
+    public float fireRate;
+    private float fireCounter;
 
 
 
@@ -52,46 +75,20 @@ public class EnemyAI : MonoBehaviour
 
         InvokeRepeating("UpdatePath", 0f, .5f);
         StartCoroutine(DetectionCoroutine());
-        
+
 
     }
 
-    void UpdatePath()
-    {
-        if (seeker.IsDone())
-        {
-            Vector3 range = new Vector3(.2f, .2f);
-            //generating path
-            if(target != null)
-            {
-                seeker.StartPath(rb.position, target.transform.position - range, OnPathComplete);
-            }
-            else
-            {
-                return;
-            }
-            
-        }
-    }
 
-    void OnPathComplete(Path p)
-    {
-        if (!p.error)
-        {
-            path = p;
-            currentWaypoint = 0;
-        }
-    }
     private void Update()
     {
         if (target != null)
         {
-            if (Vector2.Distance(transform.position, target.transform.position) < UnitAttackRange)
-            {
-                UnitAction();
-            }
+            UnitAction();
+
         }
-        
+        UnitDeath();
+
         /* 
         Check if something is in radius
 	        if is in radius, then
@@ -110,7 +107,7 @@ public class EnemyAI : MonoBehaviour
         FollowEnemy();
     }
 
-    //follow enemy
+    //follow enemy / Pathfinding
     void FollowEnemy()
     {
         //if there is no path, do nothing
@@ -138,6 +135,46 @@ public class EnemyAI : MonoBehaviour
             Debug.Log(distance);
             currentWaypoint++;
         }
+
+
+        //flip Unit
+        if (rb.velocity.x >= 0.01f)
+        {
+            transform.localScale = new Vector3(1f, 1f, 1f);
+            //Debug.Log("Turned Right");
+        }
+        else if (rb.velocity.x <= -0.01f)
+        {
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+            //Debug.Log("Turned Left");
+        }
+
+    }
+
+    void UpdatePath()
+    {
+        if (seeker.IsDone())
+        {
+            //generating path
+            if (target != null)
+            {
+                seeker.StartPath(rb.position, target.transform.position - Range, OnPathComplete);
+            }
+            else
+            {
+                return;
+            }
+
+        }
+    }
+
+    void OnPathComplete(Path p)
+    {
+        if (!p.error)
+        {
+            path = p;
+            currentWaypoint = 0;
+        }
     }
 
 
@@ -151,27 +188,37 @@ public class EnemyAI : MonoBehaviour
 
     public void PerformDetection()
     {
-        Collider2D collider = Physics2D.OverlapCircle((Vector2)detectorOrigin.position + detectorOriginOffset, detectorSize,detectorLayerMask);
+        Collider2D collider = Physics2D.OverlapCircle((Vector2)detectorOrigin.position + detectorOriginOffset, detectorSize, detectorLayerMask);
         Debug.Log("Detecting....");
 
-        if(collider != null)
+        if (currentTarget != null)
+        {
+            return;
+        }
+
+        //if there is something in collider
+        if (collider != null)
         {
             target = collider.gameObject;
-            TargetDetected = true;
+            currentTarget = target;
+            Debug.Log(target.name + " Detected");
+            PlayerDetected = true;
         }
         else
         {
             target = null;
-            TargetDetected = false;
+            currentTarget = null;
+            isInCombat = false;
+            PlayerDetected = false;
         }
     }
 
     private void OnDrawGizmos()
     {
-        if(showGizmo && detectorOrigin != null)
+        if (showGizmo && detectorOrigin != null)
         {
             Gizmos.color = gizmoIdleColor;
-            if (TargetDetected)
+            if (PlayerDetected)
                 Gizmos.color = gizmoDetectedColor;
             Gizmos.DrawSphere((Vector2)detectorOrigin.position + detectorOriginOffset, detectorSize);
         }
@@ -180,30 +227,72 @@ public class EnemyAI : MonoBehaviour
     //Action
     void UnitAction()
     {
-        
-        if(delay > 2f)
+        if (Vector2.Distance(transform.position, target.transform.position) < UnitAttackRange)
         {
-            if (target.tag == "Player")
+            if (delay > 2f)
             {
-                target.GetComponent<PlayerController>().health -= UnitDamage;
+                switch (unitType)
+                {
+                    case UnitType.Melee:
+                        if (target.tag == "Player")
+                        {
+                            target.GetComponent<PlayerController>().playerHealth -= UnitDamage;
+                            Debug.Log("Attacking" + target.name);
+                            delay = 0;
+                        }
+                        else if (target.tag == "Companion")
+                        {
+                            target.GetComponent<AllyAI>().UnitHealth -= UnitDamage;
+                            Debug.Log("Attacking" + target.name);
+                            delay = 0;
+                        }
+                    break;
+
+                    case UnitType.Ranged:
+                        fireCounter -= Time.deltaTime;
+                        if (fireCounter <= 0)
+                        {
+                            GameObject bullet = GameObject.Instantiate(projectiles, firepoint.position, firepoint.rotation);
+                            bullet.GetComponent<EnemyBullet>().bulletTarget = target;
+                            fireCounter = fireRate;
+                        }
+
+                        /*
+                         *if enemy is in attack distance, do action
+                          */
+
+                        break; 
+
+                }
+                delay += Time.deltaTime;
             }
-            else if (target.tag == "Companion")
+
+        }delay += Time.deltaTime;
+
+
+
+
+        if ( unitType == UnitType.Ranged && shouldShoot)
+        {
+            fireCounter -= Time.deltaTime;
+            if(fireCounter <= 0)
             {
-                target.GetComponent<UnitAI>().UnitHealth -= UnitDamage;
+                fireCounter = fireRate;
+                Instantiate(projectiles, transform.position,transform.rotation);
             }
-            delay = 0;
         }
-        delay += Time.deltaTime;
 
-
+        /*
+         *if enemy is in attack distance, do action
+          */
     }
 
-    /*
-    IEnumerator AttackEnemy()
+
+    void UnitDeath()
     {
-        isReadyToAttack = false;
-        yield return new WaitForSeconds(2f);
-        isReadyToAttack = true;
-        UnitAction();
-    }*/
+        if (UnitHealth <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }

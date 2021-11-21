@@ -100,6 +100,7 @@ MonoBehaviour:
   speed: 7.5
   impactEffect: {fileID: 2329032910313557349, guid: 77286c0c6b7cc434285e4d8646349016,
     type: 3}
+  bulletDamage: 3
 --- !u!61 &3597089996925359183
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class PlayerBullet : MonoBehaviour
     public float speed = 7.5f;
     private Rigidbody2D rb2d;
     public GameObject impactEffect;
+    public int bulletDamage;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +27,7 @@ public class PlayerBullet : MonoBehaviour
 
         if(collision.gameObject.tag == "Enemy")
         {
-            collision.GetComponent<EnemyController>().DamageEnemy(50);
+            collision.GetComponent<EnemyAI>().UnitHealth -= bulletDamage;
         }
         
     }

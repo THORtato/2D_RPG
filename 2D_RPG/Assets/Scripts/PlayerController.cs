@@ -18,14 +18,16 @@ public class PlayerController : MonoBehaviour
     public Animator Anim;
 
     public int playerHealth;
+    public int playerMana;
 
     [Header("Attacking")]
     public GameObject Bullet;
     public Transform firePoint;
-    public float timeBetweenShots;
     private float shotCounter;
+    [SerializeField]
+    private float _fireRate = 0.15f;
+    private float _canFire = -1f;
 
-    public int health;
 
     private void Awake()
     {
@@ -45,7 +47,11 @@ public class PlayerController : MonoBehaviour
     {
         PlayerMove();
         PlayerRotate();
-        PlayerShooting();
+        if(playerMana > 0)
+        {
+            PlayerShooting();
+        }
+        PlayerDeath();        
 
     }
 
@@ -89,18 +95,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //shooting
     void PlayerShooting()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Instantiate(Bullet, firePoint.position, firePoint.rotation);
-            shotCounter = timeBetweenShots;
-        }
-        ShootingCheck();
-        
-    }
-
-    void ShootingCheck()
     {
         if (Input.GetMouseButton(0))
         {
@@ -108,17 +104,17 @@ public class PlayerController : MonoBehaviour
             if (shotCounter <= 0)
             {
                 Instantiate(Bullet, firePoint.position, firePoint.rotation);
-                shotCounter = timeBetweenShots;
+                playerMana -= 1;
+                shotCounter = _fireRate;
             }
         } 
     }
 
-    public void DamagePlayer(int damage)
+    public void PlayerDeath()
     {
-        health -= damage;
-        if (health <= 0)
+        if (playerHealth <= 0)
         {
-            gameObject.SetActive(false);
+            Destroy(this.gameObject);
         }
     }
 }
