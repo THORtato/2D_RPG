@@ -249,42 +249,22 @@ public class EnemyAI : MonoBehaviour
                     break;
 
                     case UnitType.Ranged:
-                        fireCounter -= Time.deltaTime;
-                        if (fireCounter <= 0)
+                        if (shouldShoot)
                         {
                             GameObject bullet = GameObject.Instantiate(projectiles, firepoint.position, firepoint.rotation);
                             bullet.GetComponent<EnemyBullet>().bulletTarget = target;
-                            fireCounter = fireRate;
+                            Debug.Log("Bullet Instantiated");
+                            delay = 0;
                         }
-
-                        /*
-                         *if enemy is in attack distance, do action
-                          */
+                            
 
                         break; 
 
                 }
-                delay += Time.deltaTime;
             }
-
-        }delay += Time.deltaTime;
-
-
-
-
-        if ( unitType == UnitType.Ranged && shouldShoot)
-        {
-            fireCounter -= Time.deltaTime;
-            if(fireCounter <= 0)
-            {
-                fireCounter = fireRate;
-                Instantiate(projectiles, transform.position,transform.rotation);
-            }
+            delay += Time.deltaTime;
         }
 
-        /*
-         *if enemy is in attack distance, do action
-          */
     }
 
 

@@ -11,8 +11,15 @@ public class EnemyBullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(bulletTarget);
-        direction = bulletTarget.transform.position - transform.position;
+        if(bulletTarget == null)
+        {
+            print("Target Is NULL");
+        } else
+        {
+            Debug.Log(bulletTarget);
+            direction = bulletTarget.transform.position - transform.position;
+        }
+        
 
         //direction = PlayerController.instance.transform.position - transform.position;
         direction.Normalize();
@@ -21,7 +28,6 @@ public class EnemyBullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(bulletTarget);
         transform.position += direction * speed * Time.deltaTime;
     }
 
@@ -29,7 +35,7 @@ public class EnemyBullet : MonoBehaviour
     {
         if(target.tag == "Player")
         {
-
+            print("Player Hit");
             Destroy(gameObject);
         }
         
