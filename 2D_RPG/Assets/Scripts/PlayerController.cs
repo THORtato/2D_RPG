@@ -60,19 +60,20 @@ public class PlayerController : MonoBehaviour
         Vector3 mousePosition = Input.mousePosition;
         Vector3 screenPoint = theCamera.WorldToScreenPoint(transform.localPosition);
 
+
         Vector2 offset = new Vector2(mousePosition.x - screenPoint.x, mousePosition.y - screenPoint.y);
         float angle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
         gunArm.rotation = Quaternion.Euler(0, 0, angle);
 
         if (mousePosition.x < screenPoint.x)
         {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
-            gunArm.localScale = new Vector3(-1f, -1f, -1f);
+            transform.localScale = new Vector3(1f, 1f, 1f);
+            gunArm.localScale = new Vector3(1f, 1f, -1f);
         }
         else
         {
-            transform.localScale = Vector3.one;
-            gunArm.localScale = Vector3.one;
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+            gunArm.localScale = new Vector3(-1f, -1f, 1f);
         }
     }
 

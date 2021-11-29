@@ -22,10 +22,8 @@ public class EnemyAction : MonoBehaviour
 
     public void UnitAction()
     {
-        if (Vector2.Distance(transform.position, enemyAI.target.transform.position) < enemyAI.UnitAttackRange)
+        if (Vector2.Distance(transform.position, enemyAI.target.transform.position) < enemyAI.UnitAttackRange && delay > 2f)
         {
-            if (delay > 2f)
-            {
                 switch (unitType)
                 {
                     case UnitType.Melee:
@@ -56,7 +54,6 @@ public class EnemyAction : MonoBehaviour
                         break;
 
                 }
-            }
             delay += Time.deltaTime;
         }
 
