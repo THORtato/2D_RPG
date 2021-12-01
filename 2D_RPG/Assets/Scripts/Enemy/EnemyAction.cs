@@ -13,17 +13,24 @@ public class EnemyAction : MonoBehaviour
     EnemyAI enemyAI;
     public float delay;
     public UnitType unitType;
+    public GameObject impactEffect;
+    public Transform impactPoint;
 
     // Start is called before the first frame update
     void Start()
     {
         enemyAI = GetComponent<EnemyAI>();
+
     }
 
     public void UnitAction()
     {
-        if (Vector2.Distance(transform.position, enemyAI.target.transform.position) < enemyAI.UnitAttackRange && delay > 2f)
+        if (Vector2.Distance(transform.position, enemyAI.target.transform.position) < enemyAI.UnitAttackRange)
         {
+            if(delay > 2f)
+            {
+                enemyAI.Anim.SetBool("isAttacking", true);
+                
                 switch (unitType)
                 {
                     case UnitType.Melee:
@@ -32,6 +39,9 @@ public class EnemyAction : MonoBehaviour
                             enemyAI.target.GetComponent<PlayerController>().playerHealth -= enemyAI.UnitDamage;
                             Debug.Log("Attacking" + enemyAI.target.name);
                             delay = 0;
+                            
+
+
                         }
                         else if (enemyAI.target.tag == "Companion")
                         {
@@ -39,6 +49,7 @@ public class EnemyAction : MonoBehaviour
                             Debug.Log("Attacking" + enemyAI.target.name);
                             delay = 0;
                         }
+                        
                         break;
 
                     case UnitType.Ranged:
@@ -54,6 +65,13 @@ public class EnemyAction : MonoBehaviour
                         break;
 
                 }
+                Instantiate(impactEffect, impactPoint.position, impactPoint.rotation);
+            }
+            else if(delay < 2f)
+            {
+                enemyAI.Anim.SetBool("isAttacking", false);
+            }
+            
             delay += Time.deltaTime;
         }
 

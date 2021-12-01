@@ -117,7 +117,7 @@ public class AllyAI : MonoBehaviour
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
         if (distance < nextWaypointDistance)
         {
-            Debug.Log(distance);
+            //Debug.Log(distance);
             currentWaypoint++;
         }
 

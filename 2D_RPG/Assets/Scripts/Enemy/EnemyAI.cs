@@ -26,8 +26,6 @@ public class EnemyAI : MonoBehaviour
     public float UnitAttackRange;
     public bool isReadyToAttack = true;
     
-   
-
 
     //Movement
     [Header("Movement Settings")]
@@ -39,6 +37,8 @@ public class EnemyAI : MonoBehaviour
     bool reachEndofPath = false;
     Seeker seeker;
     Rigidbody2D rb;
+
+    public Animator Anim;
 
     //Detection
     [Header("Detection Settings")]
@@ -89,6 +89,7 @@ public class EnemyAI : MonoBehaviour
         if (target != null)
         {
             enemyAction.UnitAction();
+            
 
         }
         UnitDeath();
@@ -132,22 +133,32 @@ public class EnemyAI : MonoBehaviour
         Vector2 force = direction * speed * Time.deltaTime;
 
         rb.AddForce(force);
+        
+        //animation
+        if(rb.velocity != Vector2.zero)
+        {
+            Anim.SetBool("isMoving", true);
+        }
+        else
+        {
+            Anim.SetBool("isMoving", false);
+        }
 
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
-        if (distance < nextWaypointDistance)
+        if (distance <= nextWaypointDistance)
         {
-            Debug.Log(distance);
+            //Debug.Log(distance);
             currentWaypoint++;
         }
 
 
         //flip Unit
-        if (rb.velocity.x >= 0.01f)
+        if (rb.velocity.x >= 0.1f)
         {
             transform.localScale = new Vector3(-1f, 1f, 1f);
             //Debug.Log("Turned Right");
         }
-        else if (rb.velocity.x <= -0.01f)
+        else if (rb.velocity.x <= -0.1f)
         {
             transform.localScale = new Vector3(1f, 1f, 1f);
             //Debug.Log("Turned Left");
