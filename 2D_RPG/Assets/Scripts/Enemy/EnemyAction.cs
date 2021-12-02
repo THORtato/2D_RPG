@@ -29,19 +29,18 @@ public class EnemyAction : MonoBehaviour
         {
             if(delay > 2f)
             {
-                enemyAI.Anim.SetBool("isAttacking", true);
-                
                 switch (unitType)
                 {
                     case UnitType.Melee:
+                        enemyAI.MovementDelay = .5f;
+                        enemyAI.Anim.SetBool("isAttacking", true);
                         if (enemyAI.target.tag == "Player")
                         {
+
                             enemyAI.target.GetComponent<PlayerController>().playerHealth -= enemyAI.UnitDamage;
                             Debug.Log("Attacking" + enemyAI.target.name);
                             delay = 0;
                             
-
-
                         }
                         else if (enemyAI.target.tag == "Companion")
                         {
@@ -49,10 +48,12 @@ public class EnemyAction : MonoBehaviour
                             Debug.Log("Attacking" + enemyAI.target.name);
                             delay = 0;
                         }
-                        
+                        Instantiate(impactEffect, impactPoint.position, impactPoint.rotation);
                         break;
 
                     case UnitType.Ranged:
+                        enemyAI.MovementDelay = 3f;
+                        enemyAI.shouldShoot = true;
                         if (enemyAI.shouldShoot)
                         {
                             GameObject bullet = GameObject.Instantiate(enemyAI.projectiles, enemyAI.firepoint.position, enemyAI.firepoint.rotation);
@@ -65,10 +66,11 @@ public class EnemyAction : MonoBehaviour
                         break;
 
                 }
-                Instantiate(impactEffect, impactPoint.position, impactPoint.rotation);
+                
             }
             else if(delay < 2f)
             {
+                enemyAI.shouldShoot = false;
                 enemyAI.Anim.SetBool("isAttacking", false);
             }
             

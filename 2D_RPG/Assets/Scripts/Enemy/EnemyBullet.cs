@@ -38,10 +38,7 @@ public class EnemyBullet : MonoBehaviour
             print("Player Hit");
             Destroy(gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+
         
         
     }

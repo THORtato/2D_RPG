@@ -37,6 +37,7 @@ public class EnemyAI : MonoBehaviour
     bool reachEndofPath = false;
     Seeker seeker;
     Rigidbody2D rb;
+    public float MovementDelay;
 
     public Animator Anim;
 
@@ -76,7 +77,7 @@ public class EnemyAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         enemyAction = GetComponent<EnemyAction>();
 
-        InvokeRepeating("UpdatePath", 0f, .5f);
+        InvokeRepeating("UpdatePath", 0f, MovementDelay);
         StartCoroutine(DetectionCoroutine());
 
 
