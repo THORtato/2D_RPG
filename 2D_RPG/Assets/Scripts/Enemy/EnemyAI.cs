@@ -12,10 +12,6 @@ public class EnemyAI : MonoBehaviour
 
     public EnemyAction enemyAction;
 
-    
-
-
-
     //Stats
     [Header("Unit Stats")]
     public float speed = 200f;
@@ -38,8 +34,15 @@ public class EnemyAI : MonoBehaviour
     Seeker seeker;
     Rigidbody2D rb;
     public float MovementDelay;
-
     public Animator Anim;
+
+    [Header("Patrol")]
+    public float patrolSpeed;
+    public Transform[] patrolPoints;
+    public int currentPointIndex;
+    public float waitTime;
+    bool once;
+
 
     //Detection
     [Header("Detection Settings")]
@@ -90,8 +93,10 @@ public class EnemyAI : MonoBehaviour
         if (target != null)
         {
             enemyAction.UnitAction();
-            
-
+        }
+        else
+        {
+            enemyPatrol();
         }
         UnitDeath();
 
@@ -193,6 +198,50 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    //patrol
+    void enemyPatrol()
+    {
+        if(transform.position != patrolPoints[currentPointIndex].position)
+        {
+            Anim.SetBool("isMoving", true);
+            transform.position = Vector2.MoveTowards(transform.position, patrolPoints[currentPointIndex].position, patrolSpeed * Time.deltaTime);
+            print(rb.velocity);
+        }
+        else
+        {
+            if(once == false)
+            {
+                Anim.SetBool("isMoving", false);
+                once = true;
+                StartCoroutine(Wait());
+            }
+            
+        }
+
+        if(transform.position.x > patrolPoints[currentPointIndex].position.x)
+        {
+            transform.localScale = Vector3.one;
+        } else if(transform.position.x < patrolPoints[currentPointIndex].position.x)
+        {
+            transform.localScale = new Vector3(-1, 1, 1); ;
+        }
+
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(waitTime);
+        if(currentPointIndex +1 < patrolPoints.Length)
+        {
+            currentPointIndex++;
+        }
+        else
+        {
+            currentPointIndex = 0;
+        }
+        once = false;
+    }
+
 
     //Detection
     IEnumerator DetectionCoroutine()
@@ -239,10 +288,6 @@ public class EnemyAI : MonoBehaviour
             Gizmos.DrawSphere((Vector2)detectorOrigin.position + detectorOriginOffset, detectorSize);
         }
     }
-
-    //Action
-    
-
 
     void UnitDeath()
     {

@@ -39,15 +39,15 @@ public class EnemyAction : MonoBehaviour
 
                             enemyAI.target.GetComponent<PlayerController>().playerHealth -= enemyAI.UnitDamage;
                             Debug.Log("Attacking" + enemyAI.target.name);
-                            delay = 0;
                             
                         }
                         else if (enemyAI.target.tag == "Companion")
                         {
                             enemyAI.target.GetComponent<AllyAI>().UnitHealth -= enemyAI.UnitDamage;
                             Debug.Log("Attacking" + enemyAI.target.name);
-                            delay = 0;
+                           
                         }
+                        delay = 0;
                         Instantiate(impactEffect, impactPoint.position, impactPoint.rotation);
                         break;
 
@@ -57,12 +57,11 @@ public class EnemyAction : MonoBehaviour
                         if (enemyAI.shouldShoot)
                         {
                             GameObject bullet = GameObject.Instantiate(enemyAI.projectiles, enemyAI.firepoint.position, enemyAI.firepoint.rotation);
+                            enemyAI.Range = new Vector2((Random.RandomRange(0, 2) * 2 - 1) * 3, (Random.RandomRange(0, 2) * 2 - 1) * 3);
                             bullet.GetComponent<EnemyBullet>().bulletTarget = enemyAI.target;
                             Debug.Log("Bullet Instantiated");
                             delay = 0;
                         }
-
-
                         break;
 
                 }
@@ -70,6 +69,7 @@ public class EnemyAction : MonoBehaviour
             }
             else if(delay < 2f)
             {
+                
                 enemyAI.shouldShoot = false;
                 enemyAI.Anim.SetBool("isAttacking", false);
             }
