@@ -25,7 +25,7 @@ public class EnemyAction : MonoBehaviour
 
     public void UnitAction()
     {
-        if (Vector2.Distance(transform.position, enemyAI.target.transform.position) < enemyAI.UnitAttackRange)
+        if (Vector2.Distance(transform.position, enemyAI.target.transform.position) < enemyAI.UnitAttackRange )
         {
             if(delay > 2f)
             {

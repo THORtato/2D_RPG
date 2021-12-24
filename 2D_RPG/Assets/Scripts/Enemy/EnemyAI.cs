@@ -54,8 +54,6 @@ public class EnemyAI : MonoBehaviour
     public float detectionDelay = .5f;
     public LayerMask detectorLayerMask;
 
-    public bool isInCombat = false;
-
     //Detection gizmo
     [Header("Detection Gizmos")]
     public Color gizmoIdleColor = Color.green;
@@ -82,8 +80,6 @@ public class EnemyAI : MonoBehaviour
 
         InvokeRepeating("UpdatePath", 0f, MovementDelay);
         StartCoroutine(DetectionCoroutine());
-
-
     }
 
 
@@ -99,17 +95,6 @@ public class EnemyAI : MonoBehaviour
             enemyPatrol();
         }
         UnitDeath();
-
-        /* 
-        Check if something is in radius
-	        if is in radius, then
-		        pathfinding to somthing
-			        if distance between this and something < actionDistance
-				        Action(); / fuzzy logic
-	        if not in radius, then
-		        Patrol();
-         */
-
     }
 
     // Update is called once per frame
@@ -162,12 +147,10 @@ public class EnemyAI : MonoBehaviour
         if (rb.velocity.x >= 0.1f)
         {
             transform.localScale = new Vector3(-1f, 1f, 1f);
-            //Debug.Log("Turned Right");
         }
         else if (rb.velocity.x <= -0.1f)
         {
             transform.localScale = new Vector3(1f, 1f, 1f);
-            //Debug.Log("Turned Left");
         }
 
     }
@@ -205,7 +188,6 @@ public class EnemyAI : MonoBehaviour
         {
             Anim.SetBool("isMoving", true);
             transform.position = Vector2.MoveTowards(transform.position, patrolPoints[currentPointIndex].position, patrolSpeed * Time.deltaTime);
-            print(rb.velocity);
         }
         else
         {
@@ -217,7 +199,7 @@ public class EnemyAI : MonoBehaviour
             }
             
         }
-
+        //flip
         if(transform.position.x > patrolPoints[currentPointIndex].position.x)
         {
             transform.localScale = Vector3.one;
@@ -231,7 +213,7 @@ public class EnemyAI : MonoBehaviour
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitTime);
-        if(currentPointIndex +1 < patrolPoints.Length)
+        if(currentPointIndex + 1 < patrolPoints.Length)
         {
             currentPointIndex++;
         }
@@ -254,28 +236,34 @@ public class EnemyAI : MonoBehaviour
     public void PerformDetection()
     {
         Collider2D collider = Physics2D.OverlapCircle((Vector2)detectorOrigin.position + detectorOriginOffset, detectorSize, detectorLayerMask);
-        Debug.Log("Detecting....");
 
+        /* prevent unit to be distracted by new unit that enter gizmo
         if (currentTarget != null)
         {
             return;
         }
+        */
 
         //if there is something in collider
         if (collider != null)
         {
             target = collider.gameObject;
             currentTarget = target;
-            Debug.Log(target.name + " Detected");
+            print(collider);
             PlayerDetected = true;
+            if (currentTarget != null)
+            {
+                return;
+            }
         }
         else
         {
             target = null;
             currentTarget = null;
-            isInCombat = false;
             PlayerDetected = false;
         }
+
+        
     }
 
     private void OnDrawGizmos()
