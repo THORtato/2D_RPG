@@ -232,8 +232,6 @@ public class AllyAIOld : MonoBehaviour
         }
         delay += Time.deltaTime;
 
-        
-
        /*
         *if enemy is in attack distance, do action
          */

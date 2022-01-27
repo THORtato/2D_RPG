@@ -7,19 +7,20 @@ public class EnemyBullet : MonoBehaviour
     public float speed;
     private Vector3 direction;
     public GameObject bulletTarget;
- 
+    public int bulletPower;
+
     // Start is called before the first frame update
     void Start()
     {
-        if(bulletTarget == null)
+        if (bulletTarget == null)
         {
             print("Target Is NULL");
-        } else
+        }
+        else
         {
-            Debug.Log(bulletTarget);
             direction = bulletTarget.transform.position - transform.position;
         }
-        
+
 
         //direction = PlayerController.instance.transform.position - transform.position;
         direction.Normalize();
@@ -31,16 +32,17 @@ public class EnemyBullet : MonoBehaviour
         transform.position += direction * speed * Time.deltaTime;
     }
 
-    private void OnCollisionEnter2D(Collision2D target)
+    private void OnTriggerEnter2D(Collider2D target)
     {
-        if(target.gameObject.tag == "Player")
+        if (target.gameObject.tag == "Player")
         {
-            print("Player Hit");
+            PlayerController Player = target.GetComponent<PlayerController>();
+            Player.PlayerDamage(bulletPower);
             Destroy(gameObject);
         }
 
-        
-        
+
+
     }
 
     private void OnBecameInvisible()

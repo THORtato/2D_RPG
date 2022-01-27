@@ -22,12 +22,10 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Instantiate(impactEffect,transform.position,transform.rotation);
-        
-
         if(collision.gameObject.tag == "Enemy")
         {
-            collision.GetComponent<EnemyAI>().UnitHealth -= bulletDamage;
+            EnemyAI enemyDamage = collision.GetComponent<EnemyAI>();
+            enemyDamage.UnitDamage(bulletDamage);
             Destroy(this.gameObject);
         }
         

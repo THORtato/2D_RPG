@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveInput;
     private Rigidbody2D rb2d;
     private Camera theCamera;
+    public GameObject damageEffect;
 
     public Transform gunArm;
 
@@ -23,10 +24,12 @@ public class PlayerController : MonoBehaviour
     [Header("Attacking")]
     public GameObject Bullet;
     public Transform firePoint;
-    private float shotCounter;
+    private float _timeBetweenAttack;
+    public float playerDamage;
     [SerializeField]
-    private float _fireRate = 0.15f;
-    private float _canFire = -1f;
+    private float _attackSpeed;
+    private float _attackRange;
+    public LayerMask enemyLayerMask;
 
 
     private void Awake()
@@ -47,11 +50,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayerMove();
         PlayerRotate();
-        if(playerMana > 0)
-        {
-            PlayerShooting();
-        }
-        PlayerDeath();        
+        PlayerAttack();    
 
     }
 
@@ -97,22 +96,38 @@ public class PlayerController : MonoBehaviour
     }
 
     //shooting
-    void PlayerShooting()
+    void PlayerAttack()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && playerMana != 0)
         {
-            shotCounter -= Time.deltaTime;
-            if (shotCounter <= 0)
+            _timeBetweenAttack -= Time.deltaTime;
+            if (_timeBetweenAttack <= 0)
             {
                 Instantiate(Bullet, firePoint.position, firePoint.rotation);
                 playerMana -= 1;
-                shotCounter = _fireRate;
+                _timeBetweenAttack = _attackSpeed;
             }
-        } 
+        }
+
+        if (Input.GetKey(KeyCode.F))
+        {
+            _timeBetweenAttack -= Time.deltaTime;
+            if (_timeBetweenAttack <= 0)
+            {
+                Collider2D[] enemies = Physics2D.OverlapCircleAll(firePoint.position, _attackRange, enemyLayerMask);
+                for(int i =0; i < enemies.Length; i++)
+                {
+                    //enemies[i].GetComponent<EnemyAI>().UnitHealth -= playerDamage;
+                }
+                _timeBetweenAttack = _attackSpeed;
+            }
+        }
     }
 
-    public void PlayerDeath()
+    public void PlayerDamage(int unitAttack)
     {
+        Instantiate(damageEffect, transform.position, transform.rotation);
+        playerHealth -= unitAttack;
         if (playerHealth <= 0)
         {
             Destroy(this.gameObject);

@@ -47,6 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 6
   bulletTarget: {fileID: 0}
+  bulletShooter: {fileID: 0}
+  bulletPower: 0
 --- !u!212 &6717647636120434179
 SpriteRenderer:
   m_ObjectHideFlags: 0

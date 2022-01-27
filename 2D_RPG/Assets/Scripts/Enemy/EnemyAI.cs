@@ -15,12 +15,14 @@ public class EnemyAI : MonoBehaviour
     //Stats
     [Header("Unit Stats")]
     public float speed = 200f;
-    public int UnitDamage;
+    public int UnitAttack;
     [SerializeField]
     private int UnitMaxHealth;
     public int UnitHealth;
     public float UnitAttackRange;
     public bool isReadyToAttack = true;
+    [SerializeField]
+    GameObject DamageEffect;
     
 
     //Movement
@@ -94,7 +96,6 @@ public class EnemyAI : MonoBehaviour
         {
             enemyPatrol();
         }
-        UnitDeath();
     }
 
     // Update is called once per frame
@@ -142,16 +143,16 @@ public class EnemyAI : MonoBehaviour
             currentWaypoint++;
         }
 
-
-        //flip Unit
-        if (rb.velocity.x >= 0.1f)
+        //flip unit
+        if(target.transform.position.x > transform.position.x)
         {
             transform.localScale = new Vector3(-1f, 1f, 1f);
-        }
-        else if (rb.velocity.x <= -0.1f)
+        } else if(target.transform.position.x < transform.position.x)
         {
             transform.localScale = new Vector3(1f, 1f, 1f);
         }
+
+
 
     }
 
@@ -237,12 +238,12 @@ public class EnemyAI : MonoBehaviour
     {
         Collider2D collider = Physics2D.OverlapCircle((Vector2)detectorOrigin.position + detectorOriginOffset, detectorSize, detectorLayerMask);
 
-        /* prevent unit to be distracted by new unit that enter gizmo
+        //prevent unit to be distracted by new unit that enter gizmo
+        //but if implemented, unit cannot change target from the initial(stalking target unless target or it is dead)
         if (currentTarget != null)
         {
             return;
         }
-        */
 
         //if there is something in collider
         if (collider != null)
@@ -251,10 +252,7 @@ public class EnemyAI : MonoBehaviour
             currentTarget = target;
             print(collider);
             PlayerDetected = true;
-            if (currentTarget != null)
-            {
-                return;
-            }
+
         }
         else
         {
@@ -277,8 +275,10 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    void UnitDeath()
+    public void UnitDamage(int UnitAttack)
     {
+        Instantiate(DamageEffect,transform.position,transform.rotation);
+        UnitHealth -= UnitAttack;
         if (UnitHealth <= 0)
         {
             Destroy(this.gameObject);

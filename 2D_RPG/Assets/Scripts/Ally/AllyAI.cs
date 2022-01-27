@@ -7,9 +7,11 @@ using System;
 public class AllyAI : MonoBehaviour
 {
     public GameObject target;
-    public GameObject Player;
     public GameObject currentTarget;
+    public GameObject Player;
     public HealthBar healthBar;
+    [SerializeField]
+    GameObject DamageEffect;
 
     //public EnemyAction enemyAction;
     public HealerAction healerAction;
@@ -17,7 +19,7 @@ public class AllyAI : MonoBehaviour
     //Stats
     [Header("Unit Stats")]
     public float speed = 200f;
-    public int UnitDamage;
+    public int UnitAttack;
     [SerializeField]
     private int UnitMaxHealth;
     public int UnitHealth;
@@ -63,12 +65,12 @@ public class AllyAI : MonoBehaviour
     public float fireRate;
     private float fireCounter;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
         UnitHealth = UnitMaxHealth;
+        MovementDelay = .5f;
+        UnitMana = UnitMaxMana;
         healthBar.setHealth(UnitHealth, UnitMaxHealth);
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
@@ -76,8 +78,6 @@ public class AllyAI : MonoBehaviour
 
         InvokeRepeating("UpdatePath", 0f, MovementDelay);
         StartCoroutine(DetectionCoroutine());
-
-
     }
 
 
@@ -86,14 +86,9 @@ public class AllyAI : MonoBehaviour
         healthBar.setHealth(UnitHealth, UnitMaxHealth);
         if (target != null)
         {
-            FollowEnemy();
+            //print("Do Nuthin");
             healerAction.HealerDecision();
         }
-        else
-        {
-            //enemyPatrol();
-        }
-        UnitDeath();
     }
 
     // Update is called once per frame
@@ -105,7 +100,6 @@ public class AllyAI : MonoBehaviour
     //follow enemy / Pathfinding
     void FollowEnemy()
     {
-        Debug.Log("Following " + target);
         //if there is no path, do nothing
         if (path == null)
             return;
@@ -124,7 +118,13 @@ public class AllyAI : MonoBehaviour
         Vector2 force = direction * speed * Time.deltaTime;
 
         rb.AddForce(force);
-        
+
+        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
+        if (distance < nextWaypointDistance)
+        {
+            currentWaypoint++;
+        }
+        /*
         //animation
         if(rb.velocity != Vector2.zero)
         {
@@ -134,25 +134,15 @@ public class AllyAI : MonoBehaviour
         {
             Anim.SetBool("isMoving", false);
         }
+        */
 
-        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
-        if (distance <= nextWaypointDistance)
-        {
-            //Debug.Log(distance);
-            currentWaypoint++;
-        }
-
-
-        //flip Unit
-        if (rb.velocity.x >= 0.1f)
+        if (target.transform.position.x > transform.position.x)
         {
             transform.localScale = new Vector3(-1f, 1f, 1f);
-            //Debug.Log("Turned Right");
         }
-        else if (rb.velocity.x <= -0.1f)
+        else if (target.transform.position.x < transform.position.x)
         {
             transform.localScale = new Vector3(1f, 1f, 1f);
-            //Debug.Log("Turned Left");
         }
 
     }
@@ -170,7 +160,6 @@ public class AllyAI : MonoBehaviour
             {
                 return;
             }
-
         }
     }
 
@@ -182,8 +171,6 @@ public class AllyAI : MonoBehaviour
             currentWaypoint = 0;
         }
     }
-
-
 
     //Detection
     IEnumerator DetectionCoroutine()
@@ -213,15 +200,10 @@ public class AllyAI : MonoBehaviour
         }
         else
         {
-            target = null;
+            target = Player;
             currentTarget = null;
             PlayerDetected = false;
         }
-    }
-
-    void FollowPlayer()
-    {
-        target = Player;
     }
 
     private void OnDrawGizmos()
@@ -235,8 +217,10 @@ public class AllyAI : MonoBehaviour
         }
     }
 
-    void UnitDeath()
+    public void UnitDamage(int UnitAttack)
     {
+        Instantiate(DamageEffect, transform.position, transform.rotation);
+        UnitHealth -= UnitAttack;
         if (UnitHealth <= 0)
         {
             Destroy(this.gameObject);

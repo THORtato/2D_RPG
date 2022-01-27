@@ -36,29 +36,27 @@ public class EnemyAction : MonoBehaviour
                         enemyAI.Anim.SetBool("isAttacking", true);
                         if (enemyAI.target.tag == "Player")
                         {
-
-                            enemyAI.target.GetComponent<PlayerController>().playerHealth -= enemyAI.UnitDamage;
+                            enemyAI.target.GetComponent<PlayerController>().PlayerDamage(enemyAI.UnitAttack);
                             Debug.Log("Attacking" + enemyAI.target.name);
-                            
                         }
                         else if (enemyAI.target.tag == "Companion")
                         {
-                            enemyAI.target.GetComponent<AllyAI>().UnitHealth -= enemyAI.UnitDamage;
+                            enemyAI.target.GetComponent<AllyAI>().UnitDamage(enemyAI.UnitAttack);
                             Debug.Log("Attacking" + enemyAI.target.name);
                            
                         }
                         delay = 0;
-                        Instantiate(impactEffect, impactPoint.position, impactPoint.rotation);
                         break;
 
                     case UnitType.Ranged:
                         enemyAI.MovementDelay = 3f;
+                        enemyAI.Range = new Vector2((Random.RandomRange(0, 2) * 2 - 1) * 3, (Random.RandomRange(0, 2) * 2 - 1) * 3);
                         enemyAI.shouldShoot = true;
                         if (enemyAI.shouldShoot)
                         {
                             GameObject bullet = GameObject.Instantiate(enemyAI.projectiles, enemyAI.firepoint.position, enemyAI.firepoint.rotation);
-                            enemyAI.Range = new Vector2((Random.RandomRange(0, 2) * 2 - 1) * 3, (Random.RandomRange(0, 2) * 2 - 1) * 3);
                             bullet.GetComponent<EnemyBullet>().bulletTarget = enemyAI.target;
+                            bullet.GetComponent<EnemyBullet>().bulletPower = enemyAI.UnitAttack;
                             Debug.Log("Bullet Instantiated");
                             delay = 0;
                         }

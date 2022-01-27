@@ -5,7 +5,14 @@ using UnityEngine;
 public class HealerAction : MonoBehaviour
 {
     public GameObject healerUnit;
-    public GameObject Player;
+    public GameObject playerUnit;
+    public PlayerController Player;
+    public AllyAI Healer;
+
+    public GameObject AttackProjectiles;
+    public GameObject BuffProjectiles;
+    public float delay;
+
     float playerHealth, healerMana;
     float lowHealth, medHealth, highHealth;
     float lowMana, medMana, highMana;
@@ -137,7 +144,7 @@ public class HealerAction : MonoBehaviour
     {
         Fuzzification();
 
-        //if LOW HEALTH and LOW MANA then ATTACK
+        //if LOW HEALTH and LOW MANA then RUN
         rule1 = findMin(lowHealth, lowMana);
         //if LOW HEALTH and MED MANA then HEAL
         rule2 = findMin(lowHealth, medMana);
@@ -158,32 +165,61 @@ public class HealerAction : MonoBehaviour
 
     }
 
-
     private void Start()
     {
-        playerHealth = Player.GetComponent<PlayerController>().playerHealth;
-        RuleSet();
-        print(playerHealth);
-        
+        Player = playerUnit.GetComponent<PlayerController>();
+        Healer = healerUnit.GetComponent<AllyAI>();
     }
 
     private void Update()
     {
-        print(playerHealth);
-        print(healerMana);
+        playerHealth = Player.playerHealth;
+        healerMana = Healer.UnitMana;
+        RuleSet();
+        HealerDecision();
     }
 
     public void HealerDecision()
     {
-        actionTaken = Mathf.Max(rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9);
-        if (actionTaken == rule1 || actionTaken == rule4 || actionTaken == rule7 || actionTaken == rule8 || actionTaken == rule9)
+        if (Vector2.Distance(transform.position, Healer.target.transform.position) < Healer.UnitAttackRange)
         {
-            Debug.Log("Attack!");
+            if (delay > 2f)
+            {
+                actionTaken = Mathf.Max(rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9);
+                if (actionTaken == rule1 || actionTaken == rule4 || actionTaken == rule7 || actionTaken == rule8 || actionTaken == rule9)
+                {
+                    
+                    HealerAttack();
+                    Debug.Log("Attack");
+                }
+                else
+                {
+                    
+                    HealerHeal();
+                    Debug.Log("Heal");
+
+                }
+                delay = 0;
+            }
+            delay += Time.deltaTime;
         }
-        else
-        {
-            Debug.Log("Heal");
-        }
+        
+    }
+
+    public void HealerAttack()
+    {
+        
+        GameObject bullet = GameObject.Instantiate(AttackProjectiles, Healer.firepoint.position, Healer.firepoint.rotation);
+        bullet.GetComponent<AllyBullet>().bulletTarget = Healer.target;
+        bullet.GetComponent<AllyBullet>().bulletDamage = Healer.UnitAttack;
+    }
+
+    public void HealerHeal()
+    {
+        
+        GameObject buff = GameObject.Instantiate(BuffProjectiles, Healer.firepoint.position, Healer.firepoint.rotation);
+        buff.GetComponent<AllyBuff>().buffTarget = Healer.target;
+        buff.GetComponent<AllyBuff>().buffPower = Healer.UnitAttack;
     }
 
 }
