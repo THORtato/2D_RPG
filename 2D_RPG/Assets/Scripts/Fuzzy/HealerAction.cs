@@ -14,9 +14,9 @@ public class HealerAction : MonoBehaviour
     public float delay;
 
     float playerHealth, healerMana;
-    float lowHealth, medHealth, highHealth;
+    float lowHealth, medHealth, highHealth,fullHealth;
     float lowMana, medMana, highMana;
-    public float rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9;
+    public float rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,rule10;
     float attackRule, healRule;
     public float actionTaken;
 
@@ -70,6 +70,22 @@ public class HealerAction : MonoBehaviour
         else if (playerHealth >= 75)
         {
             highHealth = 1f;
+        }
+    }
+
+    void healthFull()
+    {
+        if(playerHealth < 75)
+        {
+            fullHealth = 0f;
+        } 
+        else if ( playerHealth >= 75 && playerHealth < 100 )
+        {
+            fullHealth = (playerHealth - 75) / 25;
+        } 
+        else if(playerHealth>= 95)
+        {
+            fullHealth = 1f;
         }
     }
 
@@ -130,6 +146,7 @@ public class HealerAction : MonoBehaviour
         healthLow();
         healthMed();
         healthHigh();
+        healthFull();
         manaLow();
         manaMed();
         manaHigh();
@@ -143,7 +160,6 @@ public class HealerAction : MonoBehaviour
     void RuleSet()
     {
         Fuzzification();
-
         //if LOW HEALTH and LOW MANA then RUN
         rule1 = findMin(lowHealth, lowMana);
         //if LOW HEALTH and MED MANA then HEAL
@@ -152,16 +168,19 @@ public class HealerAction : MonoBehaviour
         rule3 = findMin(lowHealth, highMana);
         //if MED HEALTH and LOW MANA then ATTACK
         rule4 = findMin(medHealth, lowMana);
-        //if MED HEALTH and MED MANA then ATTACK/HEAL
+        //if MED HEALTH and MED MANA then HEAL
         rule5 = findMin(medHealth, medMana);
         //if MED HEALTH and HIGH MANA then HEAL
         rule6 = findMin(medHealth, highMana);
         //if HIGH HEALTH and LOW MANA then ATTACK
         rule7 = findMin(highHealth, lowMana);
-        //if HIGH HEALTH and MED MANA then ATTACK
+        //if HIGH HEALTH and MED MANA then HEAL
         rule8 = findMin(highHealth, medMana);
-        //if HIGH HEALTH and HIGH MANA then ATTACK
+        //if HIGH HEALTH and HIGH MANA then HEAL
         rule9 = findMin(highHealth, highMana);
+        //if FULL HEALTH, then ATTACK
+        rule10 = findMin(fullHealth, 2);
+        
 
     }
 
@@ -183,21 +202,43 @@ public class HealerAction : MonoBehaviour
     {
         if (Vector2.Distance(transform.position, Healer.target.transform.position) < Healer.UnitAttackRange)
         {
-            if (delay > 2f)
+            if (delay > 3f)
             {
+                Healer.speed = Mathf.Abs(Healer.speed);
                 actionTaken = Mathf.Max(rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9);
-                if (actionTaken == rule1 || actionTaken == rule4 || actionTaken == rule7 || actionTaken == rule8 || actionTaken == rule9)
+                if ( actionTaken == rule4 || actionTaken == rule7  || actionTaken == rule10)
                 {
-                    
-                    HealerAttack();
-                    Debug.Log("Attack");
+                    if (Healer.currentTarget != null)
+                    {
+                        HealerAttack();
+                        Debug.Log("Attack");
+                    }
+                    else
+                    {
+                        Healer.Anim.SetBool("isAttacking", false);
+                        return;
+                    }
+                }
+                else if (actionTaken == rule1)
+                {
+                    Debug.Log("RUN!");
+                    HealerRun();
                 }
                 else
                 {
-                    
-                    HealerHeal();
-                    Debug.Log("Heal");
-
+                    if(Healer.target.tag == "Player")
+                    {
+                        HealerHeal();
+                        Debug.Log("Heal");
+                    }
+                    else if(Healer.target.tag == "Enemy")
+                    {
+                        HealerAttack();
+                    }
+                    else
+                    {
+                        Healer.Anim.SetBool("isAttacking", false);
+                    }
                 }
                 delay = 0;
             }
@@ -208,7 +249,7 @@ public class HealerAction : MonoBehaviour
 
     public void HealerAttack()
     {
-        
+        Healer.Anim.SetBool("isAttacking", true);
         GameObject bullet = GameObject.Instantiate(AttackProjectiles, Healer.firepoint.position, Healer.firepoint.rotation);
         bullet.GetComponent<AllyBullet>().bulletTarget = Healer.target;
         bullet.GetComponent<AllyBullet>().bulletDamage = Healer.UnitAttack;
@@ -218,8 +259,15 @@ public class HealerAction : MonoBehaviour
     {
         
         GameObject buff = GameObject.Instantiate(BuffProjectiles, Healer.firepoint.position, Healer.firepoint.rotation);
+        Healer.Anim.SetBool("isAttacking", true);
         buff.GetComponent<AllyBuff>().buffTarget = Healer.target;
         buff.GetComponent<AllyBuff>().buffPower = Healer.UnitAttack;
+        Healer.UnitMana -= 5;
     }
 
+    public void HealerRun()
+    {
+        Healer.speed *= -1;
+    }
+    
 }

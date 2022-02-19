@@ -24,10 +24,12 @@ public class PlayerController : MonoBehaviour
     [Header("Attacking")]
     public GameObject Bullet;
     public Transform firePoint;
+    [SerializeField]
     private float _timeBetweenAttack;
-    public float playerDamage;
+    public int playerDamage;
     [SerializeField]
     private float _attackSpeed;
+    [SerializeField]
     private float _attackRange;
     public LayerMask enemyLayerMask;
 
@@ -72,7 +74,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             transform.localScale = new Vector3(-1f, 1f, 1f);
-            gunArm.localScale = new Vector3(-1f, -1f, 1f);
+            gunArm.localScale = new Vector3(1f, 1f, 1f);
         }
     }
 
@@ -100,27 +102,42 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && playerMana != 0)
         {
+            
             _timeBetweenAttack -= Time.deltaTime;
             if (_timeBetweenAttack <= 0)
             {
+                Anim.SetBool("isShooting", true);
                 Instantiate(Bullet, firePoint.position, firePoint.rotation);
                 playerMana -= 1;
                 _timeBetweenAttack = _attackSpeed;
+            }
+            else
+            {
+                Anim.SetBool("isShooting", false);
             }
         }
 
         if (Input.GetKey(KeyCode.F))
         {
+            
+            Debug.Log("Player ATTACK!");
             _timeBetweenAttack -= Time.deltaTime;
             if (_timeBetweenAttack <= 0)
             {
+                Anim.SetBool("isMelee", true);
                 Collider2D[] enemies = Physics2D.OverlapCircleAll(firePoint.position, _attackRange, enemyLayerMask);
                 for(int i =0; i < enemies.Length; i++)
                 {
-                    //enemies[i].GetComponent<EnemyAI>().UnitHealth -= playerDamage;
+                   
+                    enemies[i].GetComponent<EnemyAI>().UnitDamage(playerDamage);
                 }
                 _timeBetweenAttack = _attackSpeed;
             }
+            else
+            {
+                Anim.SetBool("isMelee", false);
+            }
+            
         }
     }
 

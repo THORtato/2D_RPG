@@ -40,6 +40,12 @@ public class EnemyBullet : MonoBehaviour
             Player.PlayerDamage(bulletPower);
             Destroy(gameObject);
         }
+        else if (target.gameObject.tag == "Companion")
+        {
+            AllyAI Ally = target.GetComponent<AllyAI>();
+            Ally.UnitDamage(bulletPower);
+            Destroy(gameObject);
+        }
 
 
 

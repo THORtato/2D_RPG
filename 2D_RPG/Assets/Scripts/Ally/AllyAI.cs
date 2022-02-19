@@ -20,10 +20,9 @@ public class AllyAI : MonoBehaviour
     [Header("Unit Stats")]
     public float speed = 200f;
     public int UnitAttack;
-    [SerializeField]
-    private int UnitMaxHealth;
+    public int UnitMaxHealth;
     public int UnitHealth;
-    private int UnitMaxMana;
+    public int UnitMaxMana;
     public int UnitMana;
     public float UnitAttackRange;
     public bool isReadyToAttack = true;
@@ -44,7 +43,7 @@ public class AllyAI : MonoBehaviour
 
     //Detection
     [Header("Detection Settings")]
-    public bool PlayerDetected;
+    public bool IsInCombat;
     public Vector2 DirectionToTarget => target.transform.position - detectorOrigin.position;
     public Transform detectorOrigin;
     public float detectorSize;
@@ -69,8 +68,8 @@ public class AllyAI : MonoBehaviour
     void Start()
     {
         UnitHealth = UnitMaxHealth;
-        MovementDelay = .5f;
         UnitMana = UnitMaxMana;
+        MovementDelay = .5f;
         healthBar.setHealth(UnitHealth, UnitMaxHealth);
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
@@ -78,17 +77,27 @@ public class AllyAI : MonoBehaviour
 
         InvokeRepeating("UpdatePath", 0f, MovementDelay);
         StartCoroutine(DetectionCoroutine());
+
+        if (IsInCombat == false)
+        {
+            InvokeRepeating("UnitRegen", 1f, 2f);
+        }
+
+
+
     }
 
 
     void Update()
     {
         healthBar.setHealth(UnitHealth, UnitMaxHealth);
+        
+
         if (target != null)
         {
             //print("Do Nuthin");
             healerAction.HealerDecision();
-        }
+        } 
     }
 
     // Update is called once per frame
@@ -106,6 +115,7 @@ public class AllyAI : MonoBehaviour
 
         if (currentWaypoint >= path.vectorPath.Count)
         {
+            Anim.SetBool("isMoving", false);
             reachEndofPath = true;
             return;
         }
@@ -116,26 +126,11 @@ public class AllyAI : MonoBehaviour
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         Vector2 force = direction * speed * Time.deltaTime;
+        Anim.SetBool("isMoving", true);
 
         rb.AddForce(force);
 
-        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
-        if (distance < nextWaypointDistance)
-        {
-            currentWaypoint++;
-        }
-        /*
-        //animation
-        if(rb.velocity != Vector2.zero)
-        {
-            Anim.SetBool("isMoving", true);
-        }
-        else
-        {
-            Anim.SetBool("isMoving", false);
-        }
-        */
-
+        //flip unit
         if (target.transform.position.x > transform.position.x)
         {
             transform.localScale = new Vector3(-1f, 1f, 1f);
@@ -143,6 +138,16 @@ public class AllyAI : MonoBehaviour
         else if (target.transform.position.x < transform.position.x)
         {
             transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+
+
+
+
+        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
+        if (distance < nextWaypointDistance)
+        {
+            currentWaypoint++;
+            
         }
 
     }
@@ -196,13 +201,13 @@ public class AllyAI : MonoBehaviour
             target = collider.gameObject;
             currentTarget = target;
             Debug.Log(target.name + " Detected");
-            PlayerDetected = true;
+            IsInCombat = true;
         }
         else
         {
             target = Player;
             currentTarget = null;
-            PlayerDetected = false;
+            IsInCombat = false;
         }
     }
 
@@ -211,7 +216,7 @@ public class AllyAI : MonoBehaviour
         if (showGizmo && detectorOrigin != null)
         {
             Gizmos.color = gizmoIdleColor;
-            if (PlayerDetected)
+            if (IsInCombat)
                 Gizmos.color = gizmoDetectedColor;
             Gizmos.DrawSphere((Vector2)detectorOrigin.position + detectorOriginOffset, detectorSize);
         }
@@ -225,5 +230,22 @@ public class AllyAI : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    public void UnitRegen()
+    {
+        if(UnitMana < UnitMaxMana)
+        {
+            Debug.Log("REGEN...");
+            UnitMana += 5;
+
+        }
+        if (UnitHealth < UnitMaxHealth)
+        {
+            Debug.Log("REGEN...");
+            UnitHealth += 5;
+
+        }
+
     }
 }
