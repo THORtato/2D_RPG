@@ -210,6 +210,7 @@ public class HealerAction : MonoBehaviour
         {
             if (delay > 3f)
             {
+                Healer.Anim.SetBool("isAttacking", false);
                 Healer.speed = Healer.defaultSpeed;
                 actionTaken = Mathf.Max(rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9);
                 if ( actionTaken == rule4 || actionTaken == rule7  || actionTaken == rule10)
@@ -219,11 +220,7 @@ public class HealerAction : MonoBehaviour
                         HealerAttack();
                         Debug.Log("Attack");
                     }
-                    else
-                    {
-                        Healer.Anim.SetBool("isAttacking", false);
-                        return;
-                    }
+                    
                 }
                 else if (actionTaken == rule1 && Healer.speed > 0)
                 {
@@ -241,11 +238,9 @@ public class HealerAction : MonoBehaviour
                     {
                         HealerAttack();
                     }
-                    else
-                    {
-                        Healer.Anim.SetBool("isAttacking", false);
-                    }
+                    
                 }
+                Invoke("CancelAnimation", .2f);
                 delay = 0;
             }
             delay += Time.deltaTime;
@@ -259,11 +254,11 @@ public class HealerAction : MonoBehaviour
         GameObject bullet = GameObject.Instantiate(AttackProjectiles, Healer.firepoint.position, Healer.firepoint.rotation);
         bullet.GetComponent<AllyBullet>().bulletTarget = Healer.target;
         bullet.GetComponent<AllyBullet>().bulletDamage = Healer.UnitAttack;
+        
     }
 
     public void HealerHeal()
     {
-        
         GameObject buff = GameObject.Instantiate(BuffProjectiles, Healer.firepoint.position, Healer.firepoint.rotation);
         Healer.Anim.SetBool("isAttacking", true);
         buff.GetComponent<AllyBuff>().buffTarget = Healer.target;
@@ -274,6 +269,11 @@ public class HealerAction : MonoBehaviour
     public void HealerRun()
     {
         Healer.speed *= -1;
+    }
+
+    public void CancelAnimation()
+    {
+        Healer.Anim.SetBool("isAttacking", false);
     }
     
 }

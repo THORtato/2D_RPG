@@ -77,6 +77,7 @@
     <Compile Include="Assets\Scripts\Enemy\EnemyController.cs" />
     <Compile Include="Assets\Scripts\Fuzzy\HealerAction.cs" />
     <Compile Include="Assets\Scripts\Fuzzy\MageAction.cs" />
+    <Compile Include="Assets\Scripts\Fuzzy\WarriorAction.cs" />
     <Compile Include="Assets\Scripts\PlayerBullet.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\UI\HealthBar.cs" />

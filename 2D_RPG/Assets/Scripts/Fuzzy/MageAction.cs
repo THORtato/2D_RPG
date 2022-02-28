@@ -9,7 +9,7 @@ public class MageAction : MonoBehaviour
 
     public GameObject AttackProjectiles;
     public GameObject SkillProjectiles;
-    public float delay,skillDelay;
+    public float delay;
 
     float enemyCount, mageMana;
     float lowEnemy, medEnemy, highEnemy;
@@ -171,7 +171,6 @@ public class MageAction : MonoBehaviour
     {
         enemyCount = Mage.targetCount;
         mageMana = Mage.UnitMana;
-        skillDelay += Time.deltaTime;
         RuleSet();
         MageDecision();
     }
@@ -180,7 +179,7 @@ public class MageAction : MonoBehaviour
     {
         if (Vector2.Distance(transform.position, Mage.target.transform.position) < Mage.UnitAttackRange)
         {
-            if (delay > 3f)
+            if (delay > 5f)
             {
                 Mage.speed = Mage.defaultSpeed;
                 actionTaken = Mathf.Max(rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9);
@@ -191,27 +190,18 @@ public class MageAction : MonoBehaviour
                         MageAttack();
                         Debug.Log("Attack");
                     }
-                    else
-                    {
-                        Mage.Anim.SetBool("isAttacking", false);
-                        return;
-                    }
                 }
-                else if (actionTaken == rule7)
+                else if (actionTaken == rule7 && Mage.speed > 0)
                 {
                     Debug.Log("RUN!");
                     MageRun();
                 }
                 else
                 {
-                    if(skillDelay > 5f)
-                    {
-                        Mage.Anim.SetBool("isAttacking", true);
-                        MageSkill();
-                        skillDelay = 0;
-                    }
-                    
+                    MageSkill();
+                        
                 }
+                Invoke("CancelAnimation", .2f);
                 delay = 0;
                 
             }
@@ -230,10 +220,10 @@ public class MageAction : MonoBehaviour
 
     public void MageSkill()
     {
+        Mage.Anim.SetBool("isAttacking", true);
         GameObject skill = GameObject.Instantiate(SkillProjectiles, Mage.firepoint.position, Mage.firepoint.rotation);
         skill.GetComponent<MageSkill>().SkillDamage = Mage.UnitAttack;
-        Mage.Anim.SetBool("isAttacking", true);
-        Mage.UnitMana -= 10;
+        Mage.UnitMana -= 15;
         
     }
 
@@ -241,5 +231,11 @@ public class MageAction : MonoBehaviour
     {
         Mage.speed *= -1;
     }
-    
+
+    public void CancelAnimation()
+    {
+        Mage.Anim.SetBool("isAttacking", false);
+    }
+
+
 }

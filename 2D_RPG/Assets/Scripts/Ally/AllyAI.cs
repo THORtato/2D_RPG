@@ -15,10 +15,6 @@ public class AllyAI : MonoBehaviour
     [SerializeField]
     GameObject DamageEffect;
 
-    //public EnemyAction enemyAction;
-    public HealerAction healerAction;
-    public MageAction mageAction;
-
     //Stats
     [Header("Unit Stats")]
     public float speed = 200f;
@@ -78,8 +74,6 @@ public class AllyAI : MonoBehaviour
         manaBar.setMana(UnitMana, UnitMaxMana);
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
-        healerAction = GetComponent<HealerAction>();
-        mageAction = GetComponent<MageAction>();
 
         InvokeRepeating("UpdatePath", 0f, MovementDelay);
         StartCoroutine(DetectionCoroutine());
@@ -89,8 +83,6 @@ public class AllyAI : MonoBehaviour
             InvokeRepeating("UnitRegen", 1f, 2f);
         }
 
-
-
     }
 
 
@@ -98,12 +90,6 @@ public class AllyAI : MonoBehaviour
     {
         healthBar.setHealth(UnitHealth, UnitMaxHealth);
         manaBar.setMana(UnitMana, UnitMaxMana);
-
-        if (target != null)
-        {
-            //healerAction.HealerDecision();
-            mageAction.MageDecision();
-        } 
 
         
     }
