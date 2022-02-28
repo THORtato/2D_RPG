@@ -28,7 +28,10 @@ public class PlayerBullet : MonoBehaviour
             enemyDamage.UnitDamage(bulletDamage);
             Destroy(this.gameObject);
         }
-        
+        else if(collision.gameObject.tag == "Obstacle")
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnBecameInvisible()

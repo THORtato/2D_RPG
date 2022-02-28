@@ -67,6 +67,8 @@
     <Compile Include="Assets\Scripts\Ally\AllyAI.cs" />
     <Compile Include="Assets\Scripts\Ally\AllyBuff.cs" />
     <Compile Include="Assets\Scripts\Ally\AllyBullet.cs" />
+    <Compile Include="Assets\Scripts\Ally\MageSkill.cs" />
+    <Compile Include="Assets\Scripts\Ally\WarriorSkill.cs" />
     <Compile Include="Assets\Scripts\AllyAIOld.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAI.cs" />
@@ -74,9 +76,11 @@
     <Compile Include="Assets\Scripts\Enemy\EnemyBullet.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyController.cs" />
     <Compile Include="Assets\Scripts\Fuzzy\HealerAction.cs" />
+    <Compile Include="Assets\Scripts\Fuzzy\MageAction.cs" />
     <Compile Include="Assets\Scripts\PlayerBullet.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\UI\HealthBar.cs" />
+    <Compile Include="Assets\Scripts\UI\ManaBar.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/2019.4.20f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

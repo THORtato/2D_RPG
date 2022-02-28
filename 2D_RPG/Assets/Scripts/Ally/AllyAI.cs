@@ -8,17 +8,21 @@ public class AllyAI : MonoBehaviour
 {
     public GameObject target;
     public GameObject currentTarget;
+    public int targetCount;
     public GameObject Player;
     public HealthBar healthBar;
+    public ManaBar manaBar;
     [SerializeField]
     GameObject DamageEffect;
 
     //public EnemyAction enemyAction;
     public HealerAction healerAction;
+    public MageAction mageAction;
 
     //Stats
     [Header("Unit Stats")]
     public float speed = 200f;
+    public float defaultSpeed = 200f;
     public int UnitAttack;
     public int UnitMaxHealth;
     public int UnitHealth;
@@ -71,9 +75,11 @@ public class AllyAI : MonoBehaviour
         UnitMana = UnitMaxMana;
         MovementDelay = .5f;
         healthBar.setHealth(UnitHealth, UnitMaxHealth);
+        manaBar.setMana(UnitMana, UnitMaxMana);
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
         healerAction = GetComponent<HealerAction>();
+        mageAction = GetComponent<MageAction>();
 
         InvokeRepeating("UpdatePath", 0f, MovementDelay);
         StartCoroutine(DetectionCoroutine());
@@ -91,13 +97,15 @@ public class AllyAI : MonoBehaviour
     void Update()
     {
         healthBar.setHealth(UnitHealth, UnitMaxHealth);
-        
+        manaBar.setMana(UnitMana, UnitMaxMana);
 
         if (target != null)
         {
-            //print("Do Nuthin");
-            healerAction.HealerDecision();
+            //healerAction.HealerDecision();
+            mageAction.MageDecision();
         } 
+
+        
     }
 
     // Update is called once per frame
@@ -187,8 +195,8 @@ public class AllyAI : MonoBehaviour
 
     public void PerformDetection()
     {
-        Collider2D collider = Physics2D.OverlapCircle((Vector2)detectorOrigin.position + detectorOriginOffset, detectorSize, detectorLayerMask);
-        Debug.Log("Detecting....");
+        Collider2D[] collider = Physics2D.OverlapCircleAll((Vector2)detectorOrigin.position + detectorOriginOffset, detectorSize, detectorLayerMask);
+        targetCount = collider.Length;
 
         if (currentTarget != null)
         {
@@ -196,9 +204,9 @@ public class AllyAI : MonoBehaviour
         }
 
         //if there is something in collider
-        if (collider != null)
+        if (collider != null && collider.Length > 0)
         {
-            target = collider.gameObject;
+            target = collider[0].gameObject;
             currentTarget = target;
             Debug.Log(target.name + " Detected");
             IsInCombat = true;
@@ -209,6 +217,8 @@ public class AllyAI : MonoBehaviour
             currentTarget = null;
             IsInCombat = false;
         }
+
+        
     }
 
     private void OnDrawGizmos()

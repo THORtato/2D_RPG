@@ -9,12 +9,6 @@ public class AllyBuff : MonoBehaviour
     public GameObject buffTarget;
     public int buffPower;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-        
-    }
 
     // Update is called once per frame
     void Update()

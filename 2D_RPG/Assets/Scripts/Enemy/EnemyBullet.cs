@@ -46,6 +46,10 @@ public class EnemyBullet : MonoBehaviour
             Ally.UnitDamage(bulletPower);
             Destroy(gameObject);
         }
+        else if (target.gameObject.tag == "Obstacle")
+        {
+            Destroy(this.gameObject);
+        }
 
 
 

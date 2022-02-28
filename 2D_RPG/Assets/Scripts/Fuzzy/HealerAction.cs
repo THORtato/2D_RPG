@@ -17,7 +17,7 @@ public class HealerAction : MonoBehaviour
     float lowHealth, medHealth, highHealth,fullHealth;
     float lowMana, medMana, highMana;
     public float rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,rule10;
-    float attackRule, healRule;
+
     public float actionTaken;
 
     //ruleset
@@ -200,11 +200,17 @@ public class HealerAction : MonoBehaviour
 
     public void HealerDecision()
     {
+        //if enemy is in ally distance
+        if(Healer.target == null)
+        {
+            return;
+        }
+
         if (Vector2.Distance(transform.position, Healer.target.transform.position) < Healer.UnitAttackRange)
         {
             if (delay > 3f)
             {
-                Healer.speed = Mathf.Abs(Healer.speed);
+                Healer.speed = Healer.defaultSpeed;
                 actionTaken = Mathf.Max(rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9);
                 if ( actionTaken == rule4 || actionTaken == rule7  || actionTaken == rule10)
                 {
@@ -219,7 +225,7 @@ public class HealerAction : MonoBehaviour
                         return;
                     }
                 }
-                else if (actionTaken == rule1)
+                else if (actionTaken == rule1 && Healer.speed > 0)
                 {
                     Debug.Log("RUN!");
                     HealerRun();

@@ -47,7 +47,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 6
   bulletTarget: {fileID: 0}
-  bulletShooter: {fileID: 0}
   bulletPower: 0
 --- !u!212 &6717647636120434179
 SpriteRenderer:
@@ -87,7 +86,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 8
   m_Sprite: {fileID: 4206860055589038045, guid: 0001dc76323c93b4d99c4c4004a8a727,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

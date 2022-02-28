@@ -22,6 +22,7 @@ public class AllyBullet : MonoBehaviour
         }
 
 
+
         //direction = PlayerController.instance.transform.position - transform.position;
         direction.Normalize();
     }
@@ -40,7 +41,10 @@ public class AllyBullet : MonoBehaviour
             enemyDamage.UnitDamage(bulletDamage);
             Destroy(this.gameObject);
         }
-
+        else if (target.gameObject.tag == "Obstacle")
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnBecameInvisible()
