@@ -21,9 +21,6 @@ public class AllyBullet : MonoBehaviour
             direction = bulletTarget.transform.position - transform.position;
         }
 
-
-
-        //direction = PlayerController.instance.transform.position - transform.position;
         direction.Normalize();
     }
 

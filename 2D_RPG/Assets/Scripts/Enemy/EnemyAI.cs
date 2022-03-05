@@ -9,6 +9,9 @@ public class EnemyAI : MonoBehaviour
     public GameObject target;
     public GameObject currentTarget;
     public HealthBar healthBar;
+    public AudioClip damageSFX;
+    public AudioClip deathSFX;
+    AudioSource audioSource;
 
     public EnemyAction enemyAction;
 
@@ -79,6 +82,8 @@ public class EnemyAI : MonoBehaviour
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
         enemyAction = GetComponent<EnemyAction>();
+        audioSource = GetComponent<AudioSource>();
+        
 
         InvokeRepeating("UpdatePath", 0f, MovementDelay);
         StartCoroutine(DetectionCoroutine());
@@ -277,11 +282,18 @@ public class EnemyAI : MonoBehaviour
 
     public void UnitDamage(int UnitAttack)
     {
-        Instantiate(DamageEffect,transform.position,transform.rotation);
-        UnitHealth -= UnitAttack;
-        if (UnitHealth <= 0)
+        if(UnitHealth > 0)
         {
-            Destroy(this.gameObject);
+            audioSource.clip = damageSFX;
+            Instantiate(DamageEffect, transform.position, transform.rotation);
+            audioSource.Play();
+            UnitHealth -= UnitAttack;
+        }
+        else if (UnitHealth <= 0)
+        {
+            audioSource.clip = deathSFX;
+            audioSource.Play();
+            Destroy(this.gameObject,.4f);
         }
     }
 }

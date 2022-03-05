@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -1755761429728158873
-    second: BackGround
+    second: TerrainSprite_0
   - first:
       213: -3181480632269136865
     second: TerrainSprite_1
@@ -14,6 +14,9 @@ TextureImporter:
   - first:
       213: -3953049458842762299
     second: TerrainSprite_3
+  - first:
+      213: 7529184974750506080
+    second: TerrainSprite_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -111,13 +114,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BackGround
+      name: TerrainSprite_0
       rect:
         serializedVersion: 2
-        x: 121
-        y: 1646
-        width: 1392
-        height: 452
+        x: 132
+        y: 1654
+        width: 480
+        height: 449
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,10 +138,10 @@ TextureImporter:
       name: TerrainSprite_1
       rect:
         serializedVersion: 2
-        x: 133
-        y: 688
-        width: 1384
-        height: 920
+        x: 675
+        y: 1670
+        width: 427
+        height: 423
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,10 +159,10 @@ TextureImporter:
       name: TerrainSprite_2
       rect:
         serializedVersion: 2
-        x: 125
-        y: 69
-        width: 499
-        height: 507
+        x: 132
+        y: 689
+        width: 1378
+        height: 924
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -177,10 +180,10 @@ TextureImporter:
       name: TerrainSprite_3
       rect:
         serializedVersion: 2
-        x: 720
-        y: 81
-        width: 986
-        height: 491
+        x: 132
+        y: 63
+        width: 496
+        height: 509
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -190,6 +193,27 @@ TextureImporter:
       bones: []
       spriteID: 5c3802a1672f329c0800000000000000
       internalID: -3953049458842762299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TerrainSprite_4
+      rect:
+        serializedVersion: 2
+        x: 713
+        y: 67
+        width: 996
+        height: 499
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06c563cd7d90d7860800000000000000
+      internalID: 7529184974750506080
       vertices: []
       indices: 
       edges: []

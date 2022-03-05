@@ -6,6 +6,8 @@ public class MageAction : MonoBehaviour
 {
     public GameObject mageUnit;
     public AllyAI Mage;
+    public AudioClip SkillSFX;
+    AudioSource audioSource;
 
     public GameObject AttackProjectiles;
     public GameObject SkillProjectiles;
@@ -165,6 +167,9 @@ public class MageAction : MonoBehaviour
     private void Start()
     {
         Mage = mageUnit.GetComponent<AllyAI>();
+        audioSource = GetComponent<AudioSource>();
+        
+
     }
 
     private void Update()
@@ -221,6 +226,7 @@ public class MageAction : MonoBehaviour
     public void MageSkill()
     {
         Mage.Anim.SetBool("isAttacking", true);
+        audioSource.Play();
         GameObject skill = GameObject.Instantiate(SkillProjectiles, Mage.firepoint.position, Mage.firepoint.rotation);
         skill.GetComponent<MageSkill>().SkillDamage = Mage.UnitAttack;
         Mage.UnitMana -= 15;

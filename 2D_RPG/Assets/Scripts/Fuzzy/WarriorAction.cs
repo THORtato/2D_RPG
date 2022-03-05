@@ -6,6 +6,8 @@ public class WarriorAction : MonoBehaviour
 {
     public GameObject warriorUnit;
     public AllyAI Warrior;
+    public AudioClip SlashSFX;
+    AudioSource audioSource;
 
     public GameObject SkillProjectiles;
     public float delay;
@@ -164,6 +166,7 @@ public class WarriorAction : MonoBehaviour
     private void Start()
     {
         Warrior = warriorUnit.GetComponent<AllyAI>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -171,10 +174,10 @@ public class WarriorAction : MonoBehaviour
         enemyCount = Warrior.targetCount;
         mageMana = Warrior.UnitMana;
         RuleSet();
-        MageDecision();
+        WarriorDecision();
     }
 
-    public void MageDecision()
+    public void WarriorDecision()
     {
         if (Vector2.Distance(transform.position, Warrior.target.transform.position) < Warrior.UnitAttackRange)
         {
@@ -221,13 +224,14 @@ public class WarriorAction : MonoBehaviour
     public void WarriorSkill()
     {
         Warrior.Anim.SetBool("isAttacking", true);
+        audioSource.Play();
         GameObject skill = GameObject.Instantiate(SkillProjectiles, Warrior.firepoint.position, Warrior.firepoint.rotation);
         if(Warrior.target.transform.position.x > skill.transform.position.x)
         {
             skill.transform.localScale = new Vector3(-1f, 1f, 1f);
         }
         skill.GetComponent<WarriorSkill>().SkillDamage = Warrior.UnitAttack;
-        Destroy(skill, .5f);
+        Destroy(skill, 1f);
         Warrior.UnitMana -= 10;
         
     }
