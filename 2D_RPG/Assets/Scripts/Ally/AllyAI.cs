@@ -88,6 +88,13 @@ public class AllyAI : MonoBehaviour
 
     void Update()
     {
+        
+        if(target == null)
+        {
+            return;
+        }
+        
+        
         healthBar.setHealth(UnitHealth, UnitMaxHealth);
         manaBar.setMana(UnitMana, UnitMaxMana);
 
@@ -230,17 +237,23 @@ public class AllyAI : MonoBehaviour
 
     public void UnitRegen()
     {
-        if(UnitMana < UnitMaxMana)
-        {
-            Debug.Log("REGEN...");
-            UnitMana += 5;
 
+        if (UnitHealth >= UnitMaxHealth)
+        {
+            UnitHealth = UnitMaxHealth;
         }
+        if (UnitMana >= UnitMaxMana)
+        {
+            UnitMana = UnitMaxMana;
+        }
+
         if (UnitHealth < UnitMaxHealth)
         {
-            Debug.Log("REGEN...");
             UnitHealth += 5;
-
+        }
+        if (UnitMana < UnitMaxMana)
+        {
+            UnitMana += 5;
         }
 
     }

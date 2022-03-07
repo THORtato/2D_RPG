@@ -179,6 +179,12 @@ public class WarriorAction : MonoBehaviour
 
     public void WarriorDecision()
     {
+        if(Warrior.target == null)
+        {
+            return;
+        }
+
+
         if (Vector2.Distance(transform.position, Warrior.target.transform.position) < Warrior.UnitAttackRange)
         {
             if (delay > 3f)

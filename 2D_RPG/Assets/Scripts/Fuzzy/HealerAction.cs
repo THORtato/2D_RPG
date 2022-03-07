@@ -8,6 +8,8 @@ public class HealerAction : MonoBehaviour
     public GameObject playerUnit;
     public PlayerController Player;
     public AllyAI Healer;
+    public AudioClip SkillSFX;
+    AudioSource audioSource;
 
     public GameObject AttackProjectiles;
     public GameObject BuffProjectiles;
@@ -188,6 +190,7 @@ public class HealerAction : MonoBehaviour
     {
         Player = playerUnit.GetComponent<PlayerController>();
         Healer = healerUnit.GetComponent<AllyAI>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -260,6 +263,7 @@ public class HealerAction : MonoBehaviour
     public void HealerHeal()
     {
         GameObject buff = GameObject.Instantiate(BuffProjectiles, Healer.firepoint.position, Healer.firepoint.rotation);
+        audioSource.Play();
         Healer.Anim.SetBool("isAttacking", true);
         buff.GetComponent<AllyBuff>().buffTarget = Healer.target;
         buff.GetComponent<AllyBuff>().buffPower = Healer.UnitAttack;

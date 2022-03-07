@@ -26,6 +26,7 @@ public class EnemyAI : MonoBehaviour
     public bool isReadyToAttack = true;
     [SerializeField]
     GameObject DamageEffect;
+    public PlayerController player;
     
 
     //Movement
@@ -83,7 +84,7 @@ public class EnemyAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         enemyAction = GetComponent<EnemyAction>();
         audioSource = GetComponent<AudioSource>();
-        
+        //player = GetComponent<PlayerController>();
 
         InvokeRepeating("UpdatePath", 0f, MovementDelay);
         StartCoroutine(DetectionCoroutine());
@@ -92,15 +93,24 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        healthBar.setHealth(UnitHealth, UnitMaxHealth);
-        if (target != null)
+        if (player.isCutscene)
         {
-            enemyAction.UnitAction();
+            return;
         }
         else
         {
-            enemyPatrol();
+            healthBar.setHealth(UnitHealth, UnitMaxHealth);
+            if (target != null)
+            {
+                enemyAction.UnitAction();
+            }
+            else
+            {
+                enemyPatrol();
+            }
         }
+
+        
     }
 
     // Update is called once per frame

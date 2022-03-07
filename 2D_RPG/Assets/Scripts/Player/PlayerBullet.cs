@@ -28,7 +28,7 @@ public class PlayerBullet : MonoBehaviour
             enemyDamage.UnitDamage(bulletDamage);
             Destroy(this.gameObject);
         }
-        else if(collision.gameObject.tag == "Obstacle")
+        else if(collision.gameObject.tag == "Wall")
         {
             Destroy(this.gameObject);
         }

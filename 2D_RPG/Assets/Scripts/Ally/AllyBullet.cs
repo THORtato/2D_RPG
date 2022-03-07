@@ -38,8 +38,9 @@ public class AllyBullet : MonoBehaviour
             enemyDamage.UnitDamage(bulletDamage);
             Destroy(this.gameObject);
         }
-        else if (target.gameObject.tag == "Obstacle")
+        else if (target.gameObject.tag == "Wall")
         {
+            Debug.Log("wall hit");
             Destroy(this.gameObject);
         }
     }

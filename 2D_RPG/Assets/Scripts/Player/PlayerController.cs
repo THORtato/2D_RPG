@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public Transform gunArm;
 
     public Animator Anim;
+    public bool isCutscene;
 
     [Header("Stats")]
     public PlayerUI healthBar;
@@ -77,6 +78,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isCutscene)
+        {
+            return;
+        }
+
         PlayerMove();
         PlayerRotate();
         PlayerAttack();
