@@ -77,34 +77,35 @@ public class AllyAI : MonoBehaviour
 
         InvokeRepeating("UpdatePath", 0f, MovementDelay);
         StartCoroutine(DetectionCoroutine());
-
-        if (IsInCombat == false)
-        {
-            InvokeRepeating("UnitRegen", 1f, 2f);
-        }
+        InvokeRepeating("UnitRegen", 1f, 2f);
+        
 
     }
 
 
     void Update()
     {
-        
-        if(target == null)
+        if (Player.GetComponent<PlayerController>().isCutscene)
+        {
+            return;
+        }
+
+
+        if (target == null)
         {
             return;
         }
         
-        
         healthBar.setHealth(UnitHealth, UnitMaxHealth);
         manaBar.setMana(UnitMana, UnitMaxMana);
+        FollowEnemy();
 
-        
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        FollowEnemy();
+        
     }
 
     //follow enemy / Pathfinding
@@ -238,23 +239,26 @@ public class AllyAI : MonoBehaviour
     public void UnitRegen()
     {
 
-        if (UnitHealth >= UnitMaxHealth)
+        if (IsInCombat == false)
         {
-            UnitHealth = UnitMaxHealth;
-        }
-        if (UnitMana >= UnitMaxMana)
-        {
-            UnitMana = UnitMaxMana;
-        }
+            if (UnitHealth >= UnitMaxHealth)
+            {
+                UnitHealth = UnitMaxHealth;
+            }
+            if (UnitMana >= UnitMaxMana)
+            {
+                UnitMana = UnitMaxMana;
+            }
 
-        if (UnitHealth < UnitMaxHealth)
-        {
-            UnitHealth += 5;
-        }
-        if (UnitMana < UnitMaxMana)
-        {
-            UnitMana += 5;
-        }
+            if (UnitHealth < UnitMaxHealth)
+            {
+                UnitHealth += 5;
+            }
+            if (UnitMana < UnitMaxMana)
+            {
+                UnitMana += 5;
+            }
 
+        }
     }
 }

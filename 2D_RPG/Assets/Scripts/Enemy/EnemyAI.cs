@@ -84,7 +84,7 @@ public class EnemyAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         enemyAction = GetComponent<EnemyAction>();
         audioSource = GetComponent<AudioSource>();
-        //player = GetComponent<PlayerController>();
+        
 
         InvokeRepeating("UpdatePath", 0f, MovementDelay);
         StartCoroutine(DetectionCoroutine());
@@ -97,18 +97,18 @@ public class EnemyAI : MonoBehaviour
         {
             return;
         }
+        
+        healthBar.setHealth(UnitHealth, UnitMaxHealth);
+        FollowEnemy();
+        if (target != null)
+        {
+            enemyAction.UnitAction();
+        }
         else
         {
-            healthBar.setHealth(UnitHealth, UnitMaxHealth);
-            if (target != null)
-            {
-                enemyAction.UnitAction();
-            }
-            else
-            {
-                enemyPatrol();
-            }
+            enemyPatrol();
         }
+        
 
         
     }
@@ -116,7 +116,7 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        FollowEnemy();
+        
     }
 
     //follow enemy / Pathfinding

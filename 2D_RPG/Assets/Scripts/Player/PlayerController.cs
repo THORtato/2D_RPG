@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
     [Header("Stats")]
     public PlayerUI healthBar;
     public PlayerUI manaBar;
+    public GameObject UIcanvas;
+    public GameObject GOcanvas;
+    public GameObject Pausecanvas;
     public int playerMaxHealth;
     public int playerHealth;
     public int PlayerMaxMana;
@@ -57,12 +60,16 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        //DontDestroyOnLoad(this.gameObject);
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
+       
+        healthBar.gameObject.SetActive(true);
+        manaBar.gameObject.SetActive(true);
         rb2d = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
         audioSource.clip = impact;
@@ -80,12 +87,15 @@ public class PlayerController : MonoBehaviour
     {
         if (isCutscene)
         {
+            UIcanvas.SetActive(false);
             return;
         }
 
+        UIcanvas.SetActive(true);
         PlayerMove();
         PlayerRotate();
         PlayerAttack();
+        PlayerPause();
         CheckEnemy();
         
 
@@ -242,9 +252,26 @@ public class PlayerController : MonoBehaviour
         playerHealth -= unitAttack;
         if (playerHealth <= 0)
         {
-            Destroy(this.gameObject);
+            Invoke("PlayerGameOver", .3f);
+            
+            
         }
     }
 
+    public void PlayerGameOver()
+    {
+        //Time.timeScale = 0;
+        gameObject.SetActive(false);
+        GOcanvas.SetActive(true);
+    }
+
+    public void PlayerPause()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Time.timeScale = 0;
+            Pausecanvas.SetActive(true);
+        }
+    }
     
 }

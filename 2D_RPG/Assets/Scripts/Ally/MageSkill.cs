@@ -21,9 +21,9 @@ public class MageSkill : MonoBehaviour
         if (Enemy.tag == "Enemy")
         {
             defaultSpeed = Enemy.GetComponent<EnemyAI>().speed;
-            Enemy.GetComponent<EnemyAI>().speed *= .5f;
+            Enemy.GetComponent<EnemyAI>().speed = .5f;
             Enemy.GetComponent<EnemyAI>().patrolSpeed *= .5f;
-            Enemy.GetComponent<EnemyAI>().UnitDamage(SkillDamage/2);
+            Enemy.GetComponent<EnemyAI>().UnitDamage(SkillDamage);
         }
     }
 

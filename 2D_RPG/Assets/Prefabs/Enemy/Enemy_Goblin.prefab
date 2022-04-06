@@ -542,7 +542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728936119cc39ea4e80d9aab4efdf836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSlider: {fileID: 0}
+  healthSlider: {fileID: 1529377291395471199}
   low: {r: 1, g: 0, b: 0, a: 1}
   High: {r: 0.30876803, g: 0.735849, b: 0, a: 1}
   offset: {x: 0, y: 1, z: 0}
@@ -690,7 +690,9 @@ MonoBehaviour:
   UnitHealth: 15
   UnitAttackRange: 2
   isReadyToAttack: 1
-  DamageEffect: {fileID: 0}
+  DamageEffect: {fileID: 2329032910313557349, guid: 77286c0c6b7cc434285e4d8646349016,
+    type: 3}
+  player: {fileID: 0}
   Range: {x: 0, y: 0, z: 0}
   nextWaypointDistance: 2
   MovementDelay: 0.5

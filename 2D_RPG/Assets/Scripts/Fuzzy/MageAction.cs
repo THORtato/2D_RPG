@@ -169,6 +169,7 @@ public class MageAction : MonoBehaviour
         Mage = mageUnit.GetComponent<AllyAI>();
         audioSource = GetComponent<AudioSource>();
         
+        
 
     }
 
@@ -182,6 +183,12 @@ public class MageAction : MonoBehaviour
 
     public void MageDecision()
     {
+
+        if (Mage.target == null)
+        {
+            return;
+        }
+
         if (Vector2.Distance(transform.position, Mage.target.transform.position) < Mage.UnitAttackRange)
         {
             if (delay > 5f)

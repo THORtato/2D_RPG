@@ -9,13 +9,13 @@ public class AllyBuff : MonoBehaviour
     public GameObject buffTarget;
     public int buffPower;
 
-
     // Update is called once per frame
     void Update()
     {
+
         if (buffTarget == null)
         {
-            print("Target Is NULL");
+            return;
         }
         else
         {
@@ -29,7 +29,7 @@ public class AllyBuff : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D target)
     {
         if (target.gameObject.tag == "Player")
-        {
+        { 
             target.gameObject.GetComponent<PlayerController>().playerHealth += buffPower;
             Destroy(gameObject);
         }

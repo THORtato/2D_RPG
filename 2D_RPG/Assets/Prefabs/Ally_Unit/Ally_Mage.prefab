@@ -963,7 +963,7 @@ MonoBehaviour:
     type: 3}
   speed: 200
   defaultSpeed: 200
-  UnitAttack: 3
+  UnitAttack: 5
   UnitMaxHealth: 35
   UnitHealth: 0
   UnitMaxMana: 100

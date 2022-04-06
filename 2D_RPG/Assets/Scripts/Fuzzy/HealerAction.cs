@@ -203,12 +203,13 @@ public class HealerAction : MonoBehaviour
 
     public void HealerDecision()
     {
-        //if enemy is in ally distance
+        
         if(Healer.target == null)
         {
             return;
         }
 
+        //if enemy is in ally distance
         if (Vector2.Distance(transform.position, Healer.target.transform.position) < Healer.UnitAttackRange)
         {
             if (delay > 3f)
@@ -232,7 +233,9 @@ public class HealerAction : MonoBehaviour
                 }
                 else
                 {
-                    if(Healer.target.tag == "Player")
+                    HealerHeal();
+                    /*
+                    if(Healer.currentTarget == null)
                     {
                         HealerHeal();
                         Debug.Log("Heal");
@@ -241,8 +244,12 @@ public class HealerAction : MonoBehaviour
                     {
                         HealerAttack();
                     }
+                    */
+
+                    
                     
                 }
+                Healer.currentTarget = null;
                 Invoke("CancelAnimation", .2f);
                 delay = 0;
             }
@@ -265,7 +272,7 @@ public class HealerAction : MonoBehaviour
         GameObject buff = GameObject.Instantiate(BuffProjectiles, Healer.firepoint.position, Healer.firepoint.rotation);
         audioSource.Play();
         Healer.Anim.SetBool("isAttacking", true);
-        buff.GetComponent<AllyBuff>().buffTarget = Healer.target;
+        buff.GetComponent<AllyBuff>().buffTarget = playerUnit;
         buff.GetComponent<AllyBuff>().buffPower = Healer.UnitAttack;
         Healer.UnitMana -= 5;
     }
