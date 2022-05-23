@@ -167,6 +167,7 @@ public class WarriorAction : MonoBehaviour
     {
         Warrior = warriorUnit.GetComponent<AllyAI>();
         audioSource = GetComponent<AudioSource>();
+        audioSource.clip = SlashSFX;
     }
 
     private void Update()
@@ -236,7 +237,7 @@ public class WarriorAction : MonoBehaviour
         {
             skill.transform.localScale = new Vector3(-1f, 1f, 1f);
         }
-        skill.GetComponent<WarriorSkill>().SkillDamage = Warrior.UnitAttack;
+        skill.GetComponent<WarriorSkill>().SkillDamage = Warrior.UnitAttack * 2;
         Destroy(skill, 1f);
         Warrior.UnitMana -= 10;
         

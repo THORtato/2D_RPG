@@ -191,6 +191,7 @@ public class HealerAction : MonoBehaviour
         Player = playerUnit.GetComponent<PlayerController>();
         Healer = healerUnit.GetComponent<AllyAI>();
         audioSource = GetComponent<AudioSource>();
+        audioSource.clip = SkillSFX;
     }
 
     private void Update()

@@ -168,8 +168,9 @@ public class MageAction : MonoBehaviour
     {
         Mage = mageUnit.GetComponent<AllyAI>();
         audioSource = GetComponent<AudioSource>();
-        
-        
+        audioSource.clip = SkillSFX;
+
+
 
     }
 
