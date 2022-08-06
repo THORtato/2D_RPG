@@ -2450,9 +2450,9 @@ MonoBehaviour:
   dialogue:
     name: Mage
     sentences:
-    - Hoho, kalian sampai juga!
-    - Seperti yang kalian lihat, saya sedang terperangkap
-    - Jadi... tolong?
+    - Hoho, you all had arrived just the at the right time!
+    - As you can see, i'm in a little bit of a pinch..
+    - So.. a little help?
 --- !u!4 &917191419 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4692232034567819952, guid: 35a54567189024e4a9c9b06ce4b91bc6,

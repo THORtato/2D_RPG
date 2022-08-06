@@ -169,7 +169,7 @@ MonoBehaviour:
   slider: {fileID: 3539838945151031966}
   low: {r: 1, g: 0.8627451, b: 0, a: 1}
   High: {r: 0, g: 0.19607843, b: 1, a: 1}
-  offset: {x: 0, y: 1.8, z: 0}
+  offset: {x: 0, y: 1.5, z: 0}
 --- !u!1 &1195785858153942496
 GameObject:
   m_ObjectHideFlags: 0

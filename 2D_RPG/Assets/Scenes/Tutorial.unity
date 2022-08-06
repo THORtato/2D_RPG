@@ -190,7 +190,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Bersumpah untuk menyelamatkan negeri anda...
+  m_Text: Vowing to redeem your motherland...
 --- !u!222 &80907816
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -415,7 +415,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Engkau adalah pangeran dari negeri terkutuk
+  m_Text: You are a prince from a cursed country..
 --- !u!222 &240711733
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1082,7 +1082,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: WASD untuk menggerakkan karakter anda.
+  m_Text: WASD to move your character.
 --- !u!222 &509242971
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2278,7 +2278,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Klik [LMB] untuk menyerang jarak jauh
+  m_Text: Click [LMB] untuk use ranged attack.
 --- !u!1 &864790119
 GameObject:
   m_ObjectHideFlags: 0
@@ -3775,7 +3775,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Konon, legenda mengatakan...
+  m_Text: Legends foretold
 --- !u!222 &1711652497
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3932,7 +3932,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Anda pun memutuskan untuk memasuki hutan ajaib ini..
+  m_Text: You decided to delve into this forest...
 --- !u!222 &1731789405
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4150,8 +4150,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 22.599976}
-  m_SizeDelta: {x: 0, y: 45.236572}
+  m_AnchoredPosition: {x: 0, y: 2.9000244}
+  m_SizeDelta: {x: 0, y: 84.57507}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1858358800
 MonoBehaviour:
@@ -4279,7 +4279,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '"Ia yang menaklukkan hutan ini akan dikabulkan seluruh keinginannya"'
+  m_Text: '"They who conquer this forest will be granted all their wishes"'
 --- !u!222 &1858912593
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4826,7 +4826,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Tekan 'F' untuk menyerang.
+  m_Text: Press 'F' to do melee attack.
 --- !u!1 &3837580952197201745
 GameObject:
   m_ObjectHideFlags: 0

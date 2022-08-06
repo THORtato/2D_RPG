@@ -2487,10 +2487,10 @@ MonoBehaviour:
   dialogue:
     name: Mage
     sentences:
-    - Mencurigakan...
-    - Kenapa mereka sangat menjaga hutan ini?
-    - Aku merasa ada sesuatu yang berbahaya di hutan ini
-    - Tidak masalah dengan itu, kita hanya perlu menerobos menuju inti hutan ini!
+    - How very curious..
+    - These goblins are very persistence on keeping us out.
+    - Seems like there's more to this forest than what meets the eye..
+    - No problem with that, we just need to delve deeper unto this forest!
 --- !u!1 &928555031
 GameObject:
   m_ObjectHideFlags: 0

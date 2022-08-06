@@ -1741,7 +1741,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &683095928
 Transform:
   m_ObjectHideFlags: 0
@@ -2299,10 +2299,12 @@ MonoBehaviour:
   dialogue:
     name: Warrior
     sentences:
-    - Oh, kalian sampai juga..
-    - Mage sudah terlebih dahulu ke dalam hutan..
-    - Aku sedang menyusulnya, tapi para Goblin ini menghalangiku
-    - Ayo, bantu aku mengalahkan mereka!
+    - Oh, finally you both have arrived.
+    - Mage had gone deeper into the forest first.
+    - 'I was following him, but these goblins are blocking me...
+
+'
+    - Come, help me defeat them!
 --- !u!4 &917191419 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4692232034567819952, guid: 35a54567189024e4a9c9b06ce4b91bc6,
@@ -3304,6 +3306,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1195785858131022418, guid: 6363b429772f6cd4a88c540c13df3b22,
+        type: 3}
+      propertyPath: offset.y
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1195785858931583024, guid: 6363b429772f6cd4a88c540c13df3b22,
         type: 3}
       propertyPath: Player

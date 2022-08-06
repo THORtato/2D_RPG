@@ -834,6 +834,11 @@ PrefabInstance:
       propertyPath: slider
       value: 
       objectReference: {fileID: 974274990}
+    - target: {fileID: 1195785858131022418, guid: 6363b429772f6cd4a88c540c13df3b22,
+        type: 3}
+      propertyPath: offset.y
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1195785858153942503, guid: 6363b429772f6cd4a88c540c13df3b22,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -1779,9 +1784,9 @@ MonoBehaviour:
   dialogue:
     name: Healer
     sentences:
-    - Akhirnya anda tiba juga, Baginda.
-    - Warrior dan Mage sudah terlebih dahulu ke dalam hutan.
-    - Ayo, kita menyusul mereka.
+    - Finally you have arrived, your majesty.
+    - Warrior and Mage had already entered the forest first.
+    - Come, let us follow them.
 --- !u!4 &796829388
 Transform:
   m_ObjectHideFlags: 0

@@ -191,7 +191,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Menuju hutan misterius ini...
+  m_Text: Into this mysterious forest...
 --- !u!222 &240711733
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -955,7 +955,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Engkau dan sekutumu pun menuju lebih dalam..
+  m_Text: You and your comrade delve further into the forest...
 --- !u!222 &1711652497
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1278,7 +1278,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Lebih dan lebih dalam lagi
+  m_Text: Deeper and deeper...
 --- !u!222 &1858912593
 CanvasRenderer:
   m_ObjectHideFlags: 0
